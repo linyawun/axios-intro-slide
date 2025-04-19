@@ -50,107 +50,87 @@ fonts:
   }
 </style>
 
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
-
 ---
 
-## transition: fade-out
-
-# What is Slidev?
-
-Slidev is a slides maker and presenter designed for developers, consist of the following features
-
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - themes can be shared and re-used as npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embed Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export to PDF, PPTX, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - virtually anything that's possible on a webpage is possible in Slidev
-  <br>
-  <br>
-
-Read more about [Why Slidev?](https://sli.dev/guide/why)
-
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/features/slide-scope-style
--->
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-</style>
-
-<!--
-Here is another comment.
--->
-
----
-
-transition: slide-up
-level: 2
-
----
-
-# Navigation
-
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/ui#navigation-bar)
-
-## Keyboard Shortcuts
-
-|                                                    |                             |
-| -------------------------------------------------- | --------------------------- |
-| <kbd>right</kbd> / <kbd>space</kbd>                | next animation or slide     |
-| <kbd>left</kbd> / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd>                                      | previous slide              |
-| <kbd>down</kbd>                                    | next slide                  |
-
-<!-- https://sli.dev/guide/animations.html#click-animation -->
-
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-  alt=""
-/>
-
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
-
----
-
-layout: two-cols
-layoutClass: gap-16
-
----
-
-# Table of contents
-
-You can use the `Toc` component to generate a table of contents for your slides:
-
-```html
-<Toc minDepth="1" maxDepth="1" />
+```yaml
+glowSeed: 15
+glowOpacity: 0.3
 ```
 
-The title will be inferred from your slide content, or you can override it with `title` and `level` in your frontmatter.
+# What is Axios?
 
-::right::
-
-<Toc text-sm minDepth="1" maxDepth="2" />
+- Promise based HTTP client for the browser and node.js
+- Built-in many convenient features, such as request/response interceptors, error handling, request cancellation, etc.
+<br>
+<br>
+<div my-10 w-min flex="~ gap-1" items-center justify-center>
+  <mdi:github op50 ma text-xl />
+  <a href="https://github.com/axios/axios" target="_blank" class="font-300 mr-4">axios</a>
+  <mdi:file-document op50 ma text-xl/>
+  <a href="https://github.com/axios/axios" target="_blank" class="font-300">axios</a>
+</div>
 
 ---
 
-layout: image-right
-image: https://cover.sli.dev
+# What is Axios?
+
+Axios and Fetch
+
+| Feature                   | axios | fetch                         |
+| ------------------------- | ----- | ----------------------------- |
+| Automatic JSON parsing    | ✅    | ❌ (requires `res.json()`)    |
+| Request Interceptors      | ✅    | ❌                            |
+| Response Interceptors     | ✅    | ❌                            |
+| Automatic params handling | ✅    | ❌                            |
+| Built-in error handling   | ✅    | ❌ (manual handling required) |
+
+---
+
+# Axios 基本使用方式
+
+<div class='note-block'>
+  此篇 axios 範例與原始碼版本使用 v1.8.4
+</div>
+
+- 直接用 axios 請求
+  - `axios(config)`
+    ```js
+    axios({
+      method: 'get',
+      url: 'https://jsonplaceholder.typicode.com/posts/1',
+      headers: { 'X-Custom-Header': 'foobar' },
+    });
+    ```
+  - `axios(url[, config])`
+    ```js
+    axios('https://jsonplaceholder.typicode.com/posts/1', {
+      headers: { 'X-Custom-Header': 'foobar' },
+    });
+    ```
+  - `axios.requestMethod`
+    ```js
+    axios.get('https://jsonplaceholder.typicode.com/posts/1');
+    ```
+
+---
+
+# Axios 基本使用方式
+
+- 建立 axios instance 來請求
+  ```js
+  const apiClient = axios.create({
+    baseURL: 'https://jsonplaceholder.typicode.com',
+    timeout: 5000,
+    headers: { 'X-Custom-Header': 'foobar' },
+  });
+  apiClient.get('/posts/1').then((res) => console.log(res.data));
+  ```
+
+---
+
+# Axios 基本使用方式 - 🔍 對應原始碼
+
+### axios 在 <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#7673bc]!'>lib/axios.js</a> 被匯出
 
 ---
 
@@ -575,6 +555,36 @@ Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML D
 foo: bar
 dragPos:
 square: 691,32,167,\_,-16
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
 
 ---
 
