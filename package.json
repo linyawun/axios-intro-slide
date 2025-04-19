@@ -1,0 +1,22 @@
+{
+  "name": "axios-intro",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "slidev build",
+    "dev": "slidev --open",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@slidev/cli": "^51.5.0",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest",
+    "seedrandom": "^3.0.5",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@types/seedrandom": "^3.0.8",
+    "prettier": "^3.3.3",
+    "prettier-plugin-slidev": "^1.0.5"
+  }
+}
