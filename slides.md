@@ -472,6 +472,29 @@ receivedQuery: {
 
 # Axios URL Encoding - 🔍 Source Code
 
+<br class='hidden'/>
+
+axios URL 編碼在 [`lib/helpers/buildURL.js`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)
+
+### Axios 何時呼叫 `buildURL`？
+
+When you call `axios.get()`, here's what happens:
+
+1. The request starts in the Axios class's` _request` method ([`lib/core/Axios.js`](https://github.com/axios/axios/blob/v1.x/lib/core/Axios.js)). This is the core method that handles all requests.
+2. Inside `_request`, after handling interceptors, it calls `dispatchRequest` :
+   ```js
+   // lib/core/Axios.js
+   _request(configOrUrl, config) {
+        // 略
+       try {
+         promise = dispatchRequest.call(this, newConfig);
+       } catch (error) {
+         return Promise.reject(error);
+       }
+       // 略
+   }
+   ```
+
 ---
 
 # Code
@@ -1045,6 +1068,16 @@ square: -114,0,0,0
 
 dragPos:
 square: NaN,NaN,NaN,NaN
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
 
 ---
 
