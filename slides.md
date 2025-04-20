@@ -86,13 +86,13 @@ Axios and Fetch
 
 ---
 
-# Axios 基本使用方式
+# Basic Axios Usage
 
 <div class='note-block'>
-  此篇 axios 範例與原始碼版本使用 v1.8.4
+  This axios example and source code version uses v1.8.4
 </div>
 
-- 直接用 axios 請求
+- Direct axios request
   - `axios(config)`
     ```js
     axios({
@@ -114,9 +114,9 @@ Axios and Fetch
 
 ---
 
-# Axios 基本使用方式
+# Basic Axios Usage
 
-- 建立 axios instance 來請求
+- Create an axios instance for requests
   ```js
   const apiClient = axios.create({
     baseURL: 'https://jsonplaceholder.typicode.com',
@@ -128,9 +128,177 @@ Axios and Fetch
 
 ---
 
-# Axios 基本使用方式 - 🔍 對應原始碼
+# Basic Axios Usage - 🔍 Source Code
 
-### axios 在 <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#7673bc]!'>lib/axios.js</a> 被匯出
+### axios is exported in <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#c5c3fb]!'>lib/axios.js</a>
+
+1. `createInstance`
+<div class='ml-6'>
+
+```js
+function createInstance(defaultConfig) {
+  const context = new Axios(defaultConfig); //  creates a new Axios instance
+  const instance = bind(Axios.prototype.request, context); // creates a bound function using the bind method, This creates a function that will call Axios.prototype.request with the correct this context.
+
+  // Copy axios.prototype to instance
+  utils.extend(instance, Axios.prototype, context, { allOwnKeys: true });
+  // Copy context to instance
+  utils.extend(instance, context, null, { allOwnKeys: true });
+
+  // Factory for creating new instances
+  instance.create = function create(instanceConfig) {
+    return createInstance(mergeConfig(defaultConfig, instanceConfig));
+  };
+  return instance; //  instance is both a function AND an object
+}
+```
+
+</div>
+
+---
+
+# Basic Axios Usage - 🔍 Source Code
+
+### axios is exported in <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#c5c3fb]!'>lib/axios.js</a>
+
+1. `createInstance`
+<div class='ml-6'>
+
+`createInstance` function creates an Axios instance that functions both as a function and an object:
+
+1. Creates a base `Axios` instance (context)
+2. Binds `Axios.prototype.request` to context as the main request function
+<div class='ml-6'>
+
+- When calling `axios(config)`, it internally executes `Axios.prototype.request.bind(context)(config)`, making the main request function bound to the correct context
+</div>
+
+3. Extends instance to include:
+<div class='ml-6'>
+
+- Methods from Axios prototype chain (`get`, `post`, etc.)
+- Configuration and state from context
+</div>
+
+4. Provides `create` method for new instances with merged custom configs
+
+</div>
+
+---
+
+# Basic Axios Usage - 🔍 Source Code
+
+### axios is exported in <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#c5c3fb]!'>lib/axios.js</a>
+
+2. Create Default Axios Instance
+
+<div class='ml-6'>
+
+```js
+const axios = createInstance(defaults);
+```
+
+- Creates an axios instance with default configuration, this is the instance we use directly
+
+</div>
+
+3. Extend Axios Instance with Additional Properties and Methods
+
+<div class='ml-6'>
+
+```js
+// ...
+axios.spread = spread;
+
+// Expose isAxiosError
+axios.isAxiosError = isAxiosError;
+
+// Expose mergeConfig
+axios.mergeConfig = mergeConfig;
+
+axios.AxiosHeaders = AxiosHeaders;
+// ..
+```
+
+</div>
+
+---
+
+# Basic Axios Usage - 🔍 Source Code
+
+<br class='hidden' />
+
+補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
+
+- 全局 axios 定義為 `AxiosStatic`
+<div class='ml-6'>
+
+```js{*}{maxHeight:'250px'}
+export interface AxiosStatic extends AxiosInstance {
+  create(config?: CreateAxiosDefaults): AxiosInstance;
+  Cancel: CancelStatic;
+  CancelToken: CancelTokenStatic;
+  Axios: typeof Axios;
+  AxiosError: typeof AxiosError;
+  HttpStatusCode: typeof HttpStatusCode;
+  readonly VERSION: string;
+  isCancel: typeof isCancel;
+  all: typeof all;
+  spread: typeof spread;
+  isAxiosError: typeof isAxiosError;
+  toFormData: typeof toFormData;
+  formToJSON: typeof formToJSON;
+  getAdapter: typeof getAdapter;
+  CanceledError: typeof CanceledError;
+  AxiosHeaders: typeof AxiosHeaders;
+  mergeConfig: typeof mergeConfig;
+}
+
+declare const axios: AxiosStatic;
+```
+
+</div>
+
+---
+
+# Basic Axios Usage - 🔍 Source Code
+
+<br class='hidden' />
+
+補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
+
+- `axios.create` 回傳的 instance 定義為 `AxiosInstance`
+
+<div class='ml-6'>
+
+```js
+export interface AxiosInstance extends Axios {
+  <T = any, R = AxiosResponse<T>, D = any>(config: AxiosRequestConfig<D>): Promise<R>;
+  <T = any, R = AxiosResponse<T>, D = any>(url: string, config?: AxiosRequestConfig<D>): Promise<R>;
+
+  defaults: Omit<AxiosDefaults, 'headers'> & {
+    headers: HeadersDefaults & {
+      [key: string]: AxiosHeaderValue
+    }
+  };
+}
+```
+
+- `AxiosInstance` 沒有 `isCancel()`、`isAxiosError()` 等方法可以用、不能取得 `Cancel`、`CancelToken`、`HttpStatusCode` 等屬性
+  - `AxiosInstance` 少了上述步驟 3 擴展 `axios` 實例
+
+</div>
+
+---
+
+# Basic Axios Usage - 🔍 Source Code
+
+<br class='hidden' />
+
+補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
+
+- `axios.create` 回傳的 instance 定義為 `AxiosInstance`
+  - `AxiosInstance` 沒有定義 `create` 方法，那 `axios.create` 回傳的 instance 可以再呼叫 `create` 方法嗎？
 
 ---
 
@@ -555,6 +723,31 @@ Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML D
 foo: bar
 dragPos:
 square: 691,32,167,\_,-16
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
 
 ---
 
