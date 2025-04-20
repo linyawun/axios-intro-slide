@@ -86,6 +86,14 @@ Axios and Fetch
 
 ---
 
+```yaml
+layout: cover
+```
+
+# Basic Axios Usage
+
+---
+
 # Basic Axios Usage
 
 <div class='note-block'>
@@ -230,7 +238,7 @@ axios.AxiosHeaders = AxiosHeaders;
 
 補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
 
-- 全局 axios 定義為 `AxiosStatic`
+- Global axios is defined as `AxiosStatic`
 <div class='ml-6'>
 
 ```js{*}{maxHeight:'250px'}
@@ -267,7 +275,7 @@ declare const axios: AxiosStatic;
 
 補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
 
-- `axios.create` 回傳的 instance 定義為 `AxiosInstance`
+- Instance returned by `axios.create` is defined as `AxiosInstance`
 
 <div class='ml-6'>
 
@@ -284,8 +292,8 @@ export interface AxiosInstance extends Axios {
 }
 ```
 
-- `AxiosInstance` 沒有 `isCancel()`、`isAxiosError()` 等方法可以用、不能取得 `Cancel`、`CancelToken`、`HttpStatusCode` 等屬性
-  - `AxiosInstance` 少了上述步驟 3 擴展 `axios` 實例
+- `AxiosInstance` doesn't have methods like `isCancel()`, `isAxiosError()`, and can't access properties like `Cancel`, `CancelToken`, `HttpStatusCode`
+  - `AxiosInstance` lacks the extension of the `axios` instance from step 3 above
 
 </div>
 
@@ -297,8 +305,115 @@ export interface AxiosInstance extends Axios {
 
 補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
 
-- `axios.create` 回傳的 instance 定義為 `AxiosInstance`
-  - `AxiosInstance` 沒有定義 `create` 方法，那 `axios.create` 回傳的 instance 可以再呼叫 `create` 方法嗎？
+- `AxiosInstance` doesn't define a `create` method, so can the instance returned by `axios.create` call `create`?
+
+  - In TypeScript type checking, using `AxiosInstance.create` will show an error
+    <img src='/image/axiosInstance-create-TS.jpg'/>
+  - In JavaScript runtime, using `AxiosInstance.create` still works
+
+    ```js
+    const instance1 = axios.create({...});
+    const instance2 = instance1.create({...});
+    instance2.get('/posts/1').then((res) => console.log(res.data)); // Successfully prints data
+    ```
+
+    <div class='mt-2'/>
+
+    > The `createInstance` called by `axios.create` assigns a function to `instance.create`
+
+---
+
+```yaml
+layout: cover
+```
+
+# Axios URL Encoding
+
+---
+
+# Axios URL Encoding
+
+- Axios 幫我們做了什麼？
+  - `params` 物件會自動轉換為查詢字串
+  - 預設使用 [`encodeURIComponent`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent) 編碼
+  - 支援 [`paramsSerializer`](https://github.com/axios/axios?tab=readme-ov-file#request-config) 來客製化
+
+---
+
+# Axios URL Encoding - axios 與 fetch 範例
+
+<div class="grid grid-cols-[160px_1fr_240px] gap-x-4 mt4">
+
+<div />
+
+###### 程式碼
+
+###### console
+
+<v-clicks :every='3'>
+
+<div class="my-auto leading-6 text-base opacity-75">
+axios: ParamsInUrl
+</div>
+
+```js
+function axiosParamsInUrl() {
+  const search = 'hello world!';
+  const symbol = '&$';
+  const response = await axios.get(
+    `${API_URL}/url-encoded?search=${search}&symbol=${symbol}`
+  );
+  console.log(response.data);
+}
+```
+
+```js
+receivedQuery: {
+  search: 'hello world!',
+  symbol: '',
+  $: ''
+}
+```
+
+<div class="my-auto leading-6 text-base opacity-75">
+axios: AutoEncodeParams
+</div>
+
+```js
+function axiosAutoEncodeParams() {
+  const search = 'hello world!';
+  const symbol = '&$';
+  const response = await axios.get(`${API_URL}/url-encoded`, {
+    params: { search, symbol },
+  });
+  console.log(response.data);
+}
+```
+
+```js
+receivedQuery: {
+  search: 'hello world!',
+  symbol: '&$'
+}
+```
+
+</v-clicks>
+
+</div>
+
+---
+
+# Axios URL Encoding - axios 與 fetch 範例
+
+<div class="grid grid-cols-[160px_1fr_240px] gap-x-4 mt4">
+
+<div />
+
+###### 程式碼
+
+###### console
+
+</div>
 
 ---
 
@@ -791,6 +906,94 @@ square: -114,0,0,0
 
 ---
 
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: NaN,NaN,NaN,NaN
+
+---
+
+dragPos:
+square: NaN,NaN,NaN,NaN
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: NaN,NaN,NaN,NaN
+
+---
+dragPos:
+  square: -114,0,0,0
+---
+
 # Draggable Elements
 
 Double-click on the draggable elements to edit their positions.
@@ -836,6 +1039,7 @@ src: ./pages/imported-slides.md
 hide: false
 
 ---
+
 
 ---
 
