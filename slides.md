@@ -342,7 +342,7 @@ layout: cover
 
 # Axios URL Encoding - axios 與 fetch 範例
 
-<div class="grid grid-cols-[160px_1fr_240px] gap-x-4 mt4">
+<div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
 
 <div />
 
@@ -405,7 +405,7 @@ receivedQuery: {
 
 # Axios URL Encoding - axios 與 fetch 範例
 
-<div class="grid grid-cols-[160px_1fr_240px] gap-x-4 mt4">
+<div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
 
 <div />
 
@@ -413,7 +413,64 @@ receivedQuery: {
 
 ###### console
 
+<v-clicks :every='3'>
+
+<div class="my-auto leading-6 text-base opacity-75">
+fetch: WithoutEncode
 </div>
+
+```js
+function fetchWithoutEncode() {
+  const search = 'hello world!';
+  const symbol = '&$';
+  const res = await fetch(
+    `${API_URL}/url-encoded?search=${search}&symbol=${symbol}`
+  );
+  const data = await res.json();
+  console.log(data);
+}
+```
+
+```js
+receivedQuery: {
+  search: 'hello world!',
+  symbol: '',
+  $: ''
+}
+```
+
+<div class="my-auto leading-6 text-base opacity-75">
+fetch: ManualEncode
+</div>
+
+```js
+function fetchManualEncode() {
+  const search = 'hello world!';
+  const symbol = '&$';
+  const res = await fetch(
+    `${API_URL}/url-encoded?search=${encodeURIComponent(
+        search
+      )}&symbol=${encodeURIComponent(symbol)}`
+  );
+  const data = await res.json();
+  console.log(data);
+}
+```
+
+```js
+receivedQuery: {
+  search: 'hello world!',
+  symbol: '&$'
+}
+```
+
+</v-clicks>
+
+</div>
+
+---
+
+# Axios URL Encoding - 🔍 Source Code
 
 ---
 
@@ -990,8 +1047,15 @@ dragPos:
 square: NaN,NaN,NaN,NaN
 
 ---
+
 dragPos:
-  square: -114,0,0,0
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
 ---
 
 # Draggable Elements
@@ -1039,7 +1103,6 @@ src: ./pages/imported-slides.md
 hide: false
 
 ---
-
 
 ---
 
