@@ -8,7 +8,8 @@
 
 ### Prerequisites
 
-Make sure you have [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/) installed on your system.
+- [Node.js](https://nodejs.org/) (version 18.0 or higher)
+- [pnpm](https://pnpm.io/) package manager
 
 ### Installation
 
