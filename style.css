@@ -21,6 +21,11 @@
 .slidev-page h4 {
   font-weight: 600;
 }
+.slidev-page h5 {
+  font-weight: 400;
+  color: #dfdfe8;
+  opacity: 0.6;
+}
 .slidev-layout .quote {
   @apply opacity-60 text-sm border-l-2 border-gray-500 pl-4
   line-height: 1.25rem;

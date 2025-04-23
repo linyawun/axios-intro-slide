@@ -94,7 +94,8 @@ layout: cover
 
 ---
 
-# Basic Axios Usage
+##### Basic Axios Usage
+# Usage Examples
 
 <div class='note-block'>
   This axios example and source code version uses v1.8.4
@@ -122,7 +123,8 @@ layout: cover
 
 ---
 
-# Basic Axios Usage
+##### Basic Axios Usage
+# Usage Examples
 
 - Create an axios instance for requests
   ```js
@@ -136,7 +138,8 @@ layout: cover
 
 ---
 
-# Basic Axios Usage - 🔍 Source Code
+##### Basic Axios Usage
+# 🔍 Source Code
 
 ### axios is exported in <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#c5c3fb]!'>lib/axios.js</a>
 
@@ -165,7 +168,8 @@ function createInstance(defaultConfig) {
 
 ---
 
-# Basic Axios Usage - 🔍 Source Code
+##### Basic Axios Usage
+# 🔍 Source Code
 
 ### axios is exported in <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#c5c3fb]!'>lib/axios.js</a>
 
@@ -194,7 +198,8 @@ function createInstance(defaultConfig) {
 
 ---
 
-# Basic Axios Usage - 🔍 Source Code
+##### Basic Axios Usage
+# 🔍 Source Code
 
 ### axios is exported in <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#c5c3fb]!'>lib/axios.js</a>
 
@@ -232,7 +237,8 @@ axios.AxiosHeaders = AxiosHeaders;
 
 ---
 
-# Basic Axios Usage - 🔍 Source Code
+##### Basic Axios Usage
+# 🔍 Source Code
 
 <br class='hidden' />
 
@@ -269,7 +275,8 @@ declare const axios: AxiosStatic;
 
 ---
 
-# Basic Axios Usage - 🔍 Source Code
+##### Basic Axios Usage
+# 🔍 Source Code
 
 <br class='hidden' />
 
@@ -299,16 +306,17 @@ export interface AxiosInstance extends Axios {
 
 ---
 
-# Basic Axios Usage - 🔍 Source Code
+##### Basic Axios Usage
+# 🔍 Source Code
 
 <br class='hidden' />
 
 補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
 
-- `AxiosInstance` doesn't define a `create` method, so can the instance returned by `axios.create` call `create`?
+- Can an `axios.create` instance call `create` if `AxiosInstance` lacks this method?
 
   - In TypeScript type checking, using `AxiosInstance.create` will show an error
-    <img src='/image/axiosInstance-create-TS.jpg'/>
+    <img src='/image/axiosInstance-create-TS.jpg' width='80%'/>
   - In JavaScript runtime, using `AxiosInstance.create` still works
 
     ```js
@@ -340,7 +348,8 @@ layout: cover
 
 ---
 
-# Axios URL Encoding - axios 與 fetch 範例
+##### Axios URL Encoding
+# axios 與 fetch 範例
 
 <div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
 
@@ -403,7 +412,8 @@ receivedQuery: {
 
 ---
 
-# Axios URL Encoding - axios 與 fetch 範例
+##### Axios URL Encoding
+# axios 與 fetch 範例
 
 <div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
 
@@ -470,11 +480,12 @@ receivedQuery: {
 
 ---
 
-# Axios URL Encoding - 🔍 Source Code
+##### Axios URL Encoding
+# 🔍 Source Code
 
 <br class='hidden'/>
 
-axios URL 編碼在 [`lib/helpers/buildURL.js`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)
+Axios URL encoding is implemented in [`lib/helpers/buildURL.js`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)
 
 ### When does Axios call [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)?
 
@@ -500,9 +511,8 @@ _request(configOrUrl, config) {
 --- 
 
 
-# Axios URL Encoding - 🔍 Source Code
-
-
+##### Axios URL Encoding
+# 🔍 Source Code
 
 ### When does Axios call [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)?
 3. [`dispatchRequest`](https://github.com/axios/axios/blob/v1.x/lib/core/dispatchRequest.js) then gets the appropriate adapter (XHR for browsers, HTTP for Node.js) and calls it:
@@ -531,9 +541,8 @@ export default function dispatchRequest(config) {
 
 ---
 
-# Axios URL Encoding - 🔍 Source Code
-
-
+##### Axios URL Encoding
+# 🔍 Source Code
 
 ### When does Axios call [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)?
 4. For browser environments, it uses the XHR adapter ([`lib/adapters/xhr.js`](https://github.com/axios/axios/blob/v1.x/lib/adapters/xhr.js)). The first thing the XHR adapter does is call `resolveConfig`
@@ -571,8 +580,8 @@ export default (config) => {
 
 ---
 
-# Axios URL Encoding - 🔍 Source Code
-
+##### Axios URL Encoding
+# 🔍 Source Code
 
 ### When does Axios call [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)?
 
@@ -597,7 +606,8 @@ buildURL()  // This is where params are encoded
 
 ---
 
-# Axios URL Encoding - 🔍 Source Code
+##### Axios URL Encoding
+# 🔍 Source Code
 
 ### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
 
@@ -611,11 +621,12 @@ buildURL()  // This is where params are encoded
 
 ---
 
-# Axios URL Encoding - 🔍 Source Code
+##### Axios URL Encoding
+# 🔍 Source Code
 
 ### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
 
-```js {all|12-16|18|20-28|30-36}{maxHeight:'350px'}
+```js {all|12-16|18|20-28|30-36|38-48|all}{maxHeight:'350px'}
 /**
  * Build a URL by appending params to the end
  *
@@ -653,13 +664,13 @@ export default function buildURL(url, params, options) {
       new AxiosURLSearchParams(params, options).toString(_encode); // Use Axios's own AxiosURLSearchParams class to handle the params
   }
 
-  if (serializedParams) { // 如果有序列化後的參數
-    const hashmarkIndex = url.indexOf("#"); // 尋找 URL 中的 # 符號位置
-
-    if (hashmarkIndex !== -1) { // 如果找到 # 符號，就移除 # 及其後面的內容
+  if (serializedParams) { // If there are serialized parameters
+    const hashmarkIndex = url.indexOf("#");
+    if (hashmarkIndex !== -1) { // If # symbol is found, remove it and everything after it
       url = url.slice(0, hashmarkIndex);
     }
-    //  根據 URL 是否已有查詢參數來決定使用 ? 或 & 來連接新參數，例如 url 是 https://example.com/search?type=user 就是用 & 繼續加後面的參數
+    // Decide whether to use ? or & to connect new parameters based on whether URL already has query parameters
+    // For example, if url is https://example.com/search?type=user, use & to append additional parameters
     url += (url.indexOf('?') === -1 ? '?' : '&') + serializedParams;
   }
 
@@ -669,14 +680,16 @@ export default function buildURL(url, params, options) {
 
 ---
 
-# Axios URL Encoding - 🔍 Source Code
+##### Axios URL Encoding
+# 🔍 Source Code
 
 ### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
 - What does `AxiosURLSearchParams` do?
-  - `AxiosURLSearchParams` is a custom class in Axios that handles the conversion of parameters into URL-encoded query strings
+  - `AxiosURLSearchParams` is a custom class that handles the conversion of parameters into URL-encoded query strings
 
 <div class='ml-6'>
-```js {*}{maxHeight:'280px'}
+
+```js {*}{maxHeight:'250px'}
 /**
   * It takes a params object and converts it to a FormData object
   *
@@ -697,7 +710,7 @@ prototype.append = function append(name, value) { // 定義 append 方法，將�
 };
 
 prototype.toString = function toString(encoder) { // 定義 toString 方法，將所有 pairs 轉換為 URL-encoded string
-  const _encode = encoder ? function(value) { // 如果 toString 參數有指定 encoder，就回傳此 custom encoder， encoder.call(this, value, encode) 允許 custom encoder 存取要 encode 的 value 和 axios 預設的 encode function
+  const _encode = encoder ? function(value) { // 如果參數有指定 encoder，就回傳此 custom encoder， encoder.call(this, value, encode) 允許 custom encoder 存取要 encode 的 value 和 axios 預設的 encode function
     return encoder.call(this, value, encode); 
   } : encode; // 沒有指定 encoder，就使用預設 encode function
 
@@ -708,6 +721,55 @@ prototype.toString = function toString(encoder) { // 定義 toString 方法，�
 ```
 </div>
 
+
+---
+
+##### Axios URL Encoding
+# 🔍 Source Code
+
+### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
+- What does `AxiosURLSearchParams` do?
+  - axios 的預設 encode function
+
+<div class='ml-6'>
+
+```js{*}{maxHeight:'250px'}
+/**
+ * It encodes a string by replacing all characters that are not in the unreserved set with
+ * their percent-encoded equivalents
+ *
+ * @param {string} str - The string to encode.
+ *
+ * @returns {string} The encoded string.
+ */
+function encode(str) {
+  const charMap = {
+    '!': '%21', // Exclamation mark may be interpreted as special commands on some servers
+    "'": '%27', // Single quotes could lead to SQL injection or XSS attacks
+    '(': '%28', // Parentheses have special meaning in some query languages
+    ')': '%29',
+    '~': '%7E', // Tilde is used to represent root directory in some systems
+    '%20': '+', // Using + to represent spaces is a common convention in URL query parameters
+    '%00': '\x00' // Null bytes need special handling to prevent security vulnerabilities
+  };
+  // Call encodeURIComponent for basic encoding, then use charMap for further processing of specific characters
+  return encodeURIComponent(str).replace(/[!'()~]|%20|%00/g, function replacer(match) {
+    return charMap[match];
+  });
+}
+```
+
+</div>
+
+---
+
+##### Axios URL Encoding
+# 🔍 Source Code
+
+### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
+- What does `AxiosURLSearchParams` do?
+
+  
 
 
 ---
