@@ -683,8 +683,7 @@ export default function buildURL(url, params, options) {
 ##### Axios URL Encoding
 # 🔍 Source Code
 
-### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
-- What does `AxiosURLSearchParams` do?
+### What does [`AxiosURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/helpers/AxiosURLSearchParams.js) do?
   - `AxiosURLSearchParams` is a custom class that handles the conversion of parameters into URL-encoded query strings
 
 <div class='ml-6'>
@@ -699,7 +698,7 @@ export default function buildURL(url, params, options) {
   * @returns {void}
   */
 function AxiosURLSearchParams(params, options) {
-  this._pairs = []; // 初始化 key-value pairs
+  this._pairs = []; // Initialize key-value pairs
   params && toFormData(params, this, options); // 如果有 params 就呼叫 toFormData，toFormData 會呼叫 append 將 key-pairs 加入 _pairs 陣列
 }
 
@@ -727,13 +726,12 @@ prototype.toString = function toString(encoder) { // 定義 toString 方法，�
 ##### Axios URL Encoding
 # 🔍 Source Code
 
-### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
-- What does `AxiosURLSearchParams` do?
-  - axios 的預設 encode function
+### What does [`AxiosURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/helpers/AxiosURLSearchParams.js) do?
+  - axios default encode function
 
 <div class='ml-6'>
 
-```js{*}{maxHeight:'250px'}
+```js{*}{maxHeight:'240px'}
 /**
  * It encodes a string by replacing all characters that are not in the unreserved set with
  * their percent-encoded equivalents
@@ -761,13 +759,338 @@ function encode(str) {
 
 </div>
 
+<div class='ml-6 text-sm opacity-[0.8]'>
+The encoding results may differ between axios's encode function and native encodeURIComponent
+</div>
 ---
 
 ##### Axios URL Encoding
 # 🔍 Source Code
 
-### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
-- What does `AxiosURLSearchParams` do?
+### What does [`AxiosURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/helpers/AxiosURLSearchParams.js) do?
+  - `AxiosURLSearchParams` example
+    ```js
+    const params = {
+      name: 'John Doe',
+      age: 30,
+    };
+    const serializedParams = new AxiosURLSearchParams(params).toString(_encode);
+    // serializedParams will be "name=John+Doe&age=30"
+    ```
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### Astra apiClient
+- `url.searchParams.append` 一樣會進行編碼 ✅
+```js
+const buildUrl = (endpoint: string, params?: Record<string, unknown>): string => {
+  // ...
+
+  const url = new URL(path, baseUrl)
+
+  // add query params
+  if (params) {
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        url.searchParams.append(key, String(value))
+      }
+    })
+  }
+  return url.toString()
+}
+```
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+```js {*}{maxHeight:'150px'}
+// lib/utils.js
+/**
+ * Determine if a value is a URLSearchParams object
+ *
+ * @param {*} val The value to test
+ *
+ * @returns {boolean} True if value is a URLSearchParams object, otherwise false
+ */
+const isURLSearchParams = kindOfTest('URLSearchParams');
+```
+
+  - `kindOfTest`: returns a function that checks for a specific type
+    ```js
+    // lib/utils.js
+    const kindOfTest = (type) => {
+      type = type.toLowerCase();
+      return (thing) => kindOf(thing) === type // 回傳一個函式，若 type 是 URLSearchParams，則此函式最終會檢查一個值(thing)是否是 URLSearchParams 類型的 instance
+    }
+    ```
+
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+- `kindOf`: logic to check if it's an instance of a specific type
+  ```js
+  const {toString} = Object.prototype;
+  const kindOf = (cache => thing => {
+      const str = toString.call(thing);
+      return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
+  })(Object.create(null));
+  ```
+  - `Object.prototype.toString` 被調用在一個物件上時，會回傳 `[object Type]` 格式的字串
+    - 對於 `URLSearchParams` 物件，會回傳 `[object URLSearchParams]`
+  - `str.slice(8, -1)` 會去掉 `[object ` 和最後的 `]`，得到 Type
+    - `[object URLSearchParams]` 會變成 `URLSearchParams`
+  - 以 `Object.create(null)` 建立一個純淨的物件作為緩存
+
+
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+- `isURLSearchParams` 實際呼叫流程
+  ```js
+  const params = new URLSearchParams();
+  isURLSearchParams(params);
+
+  // 內部發生的過程：
+  // 1. toString.call(params) 回傳 "[object URLSearchParams]"
+  // 2. slice(8, -1) 得到 "URLSearchParams"
+  // 3. toLowerCase() 得到 "urlsearchparams"
+  // 4. 與傳入的 type 比較，返回 true
+  ```
+
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q1: 為什麼 `kindOf` 是用 `Object.prototype.toString.call()` 而不是 `Object.prototype.toString()`?
+  - 直接呼叫 `object.toString()` 時，大多數物件都會覆蓋繼承自 `Object.prototype` 的 `toString` 方法
+    ```js
+    const arr = [1, 2, 3];
+    arr.toString()  // 回傳 "1,2,3"
+
+    const date = new Date();
+    date.toString()  // 回傳像 "Mon Jan 01 2024 12:00:00 GMT+0800" 這樣的字串
+    ```
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q1: 為什麼 `kindOf` 是用 `Object.prototype.toString.call()` 而不是 `Object.prototype.toString()`?
+  - `Object.prototype.toString` 的原始實現會回傳物件的內部 `[[Class]]` 屬性
+    - `call` 方法可強制在任何值上使用原始的 `toString` 實現
+<div class='ml-12'>
+  <div class='quote mb-2'>
+    To use the base Object.prototype.toString() with an object that has it overridden (or to invoke it on null or undefined), you need to call Function.prototype.call() or Function.prototype.apply() on it, passing the object you want to inspect as the first parameter (called thisArg). (ref: <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString' target='_blank'>Object.prototype.toString()</a>)
+  </div>
+
+```js
+// 使用 call
+Object.prototype.toString.call([1, 2, 3])     // "[object Array]"
+Object.prototype.toString.call(new Date())    // "[object Date]"
+
+// 直接調用 toString
+[1, 2, 3].toString()      // "1,2,3"
+new Date().toString()     // "Mon Jan 01 2024 12:00:00 GMT+0800"
+```
+</div>
+
+
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
+  - 跨域（Cross-realm）支援
+    ```js
+    // 在 iframe 情境
+    const iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+    const iframeArray = iframe.contentWindow.Array;
+    const arr = new iframeArray();
+
+    // Object.prototype.toString.call()
+    toString.call(arr)  // '[object Array]' → 正確識別
+
+    // instanceof
+    arr instanceof Array  // false → 無法正確識別跨域物件
+    ```
+
+
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
+  - 原始型別（Primitives）處理
+    ```js
+    // Object.prototype.toString.call()
+    toString.call('string')  // '[object String]'
+    toString.call(123)      // '[object Number]'
+    toString.call(true)     // '[object Boolean]'
+
+    // instanceof
+    'string' instanceof String  // false
+    123 instanceof Number      // false
+    true instanceof Boolean    // false
+    ```
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
+  - `null` 和 `undefined` 處理
+    ```js
+    // Object.prototype.toString.call()
+    toString.call(null)      // '[object Null]'
+    toString.call(undefined) // '[object Undefined]'
+
+    // instanceof
+    null instanceof Object    // false
+    undefined instanceof Object // false
+    ```
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
+<div class='ml-6'>
+
+使用 `toString.call(thing)` 可保證一致性行為：
+- 跨不同執行環境有一致的行為
+- 不受原型鏈影響
+- 對內建型別有可靠的檢查
+
+</div>
+
+
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
+  - 對於這三種特定類型，兩種方法的差異較小
+    ```js
+    // 兩種方法都可行
+    const formData = new FormData();
+    const blob = new Blob([]);
+    const arrayBuffer = new ArrayBuffer(8);
+
+    // 方法 1: Object.prototype.toString.call()
+    toString.call(formData)    // '[object FormData]'
+    toString.call(blob)        // '[object Blob]'
+    toString.call(arrayBuffer) // '[object ArrayBuffer]'
+
+    // 方法 2: instanceof
+    formData instanceof FormData       // true
+    blob instanceof Blob               // true
+    arrayBuffer instanceof ArrayBuffer // true
+    ```
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
+- 差異較小的原因
+  - 都是建構函式建立的實例（不是原始型別）
+  - 都是內建型別
+  - 一般使用時較少跨域情境
+
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
+- 唯一主要差異：跨域情境
+  ```js
+  // 在 iframe 中
+  const iframe = document.createElement('iframe');
+  document.body.appendChild(iframe);
+  const iframeFormData = new iframe.contentWindow.FormData();
+
+  // Object.prototype.toString.call() - 可運作 ✅
+  toString.call(iframeFormData) === '[object FormData]'  // true
+
+  // instanceof - 可能失敗 🔺
+  iframeFormData instanceof FormData  // 在某些瀏覽器中會是 false
+  ```
+---
+
+##### Axios URL Encoding
+# Supplement
+### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
+
+- 如果是框架/函式庫開發：`Object.prototype.toString.call()` 更安全
+- 如果是一般應用開發：這三種類型用 `instanceof` 就足夠
+
+
+---
+
+```yaml
+layout: quote
+```
+
+##### Axios URL Encoding
+# Summary
+
+<br class='hidden' />
+
+
+When we call request functions like `axios.get`, Axios uses `buildURL` to combine the base URL and params object into a complete URL. It properly handles parameter encoding, removes anchors (`#`), processes existing query parameters (`?`), ensuring the generated URL is correctly formatted and secure
+
+
+
+---
+
+```yaml
+layout: cover
+```
+
+# Axios Request and Response Transformation
+
+
+
+---
+
+# Axios Request and Response Transformation
+
+- What does Axios do for us?
+  - Request transformation (`transformRequest`)
+    - Executes before sending the request, e.g., automatic `JSON.stringify(data)`
+  - Response transformation (`transformResponse`)
+    - Executes when response is received, e.g., automatic `JSON.parse(response.data)`
+  - Custom `transformRequest` or `transformResponse` functions can be passed through [config](https://axios-http.com/docs/req_config)
+
+
+---
+
+##### Axios Request and Response Transformation
+
 
   
 
@@ -4224,3 +4547,1911 @@ square: -114,0,0,0
 ---
 
 dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
+
+dragPos:
+square: -114,0,0,0
+
+---
