@@ -238,11 +238,11 @@ axios.AxiosHeaders = AxiosHeaders;
 ---
 
 ##### Basic Axios Usage
-# 🔍 Source Code
+# 📝 Supplement
 
 <br class='hidden' />
 
-補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
+Compare the differences between default axios and instance returned by `axios.create` from [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts)
 
 - Global axios is defined as `AxiosStatic`
 <div class='ml-6'>
@@ -276,11 +276,11 @@ declare const axios: AxiosStatic;
 ---
 
 ##### Basic Axios Usage
-# 🔍 Source Code
+# 📝 Supplement
 
 <br class='hidden' />
 
-補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
+Compare the differences between default axios and instance returned by `axios.create` from [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts)
 
 - Instance returned by `axios.create` is defined as `AxiosInstance`
 
@@ -298,36 +298,42 @@ export interface AxiosInstance extends Axios {
   };
 }
 ```
+<div class='text-sm'>
 
-- `AxiosInstance` doesn't have methods like `isCancel()`, `isAxiosError()`, and can't access properties like `Cancel`, `CancelToken`, `HttpStatusCode`
+- `AxiosInstance` doesn't have methods like `isCancel()`, `isAxiosError()`, and can't access properties like `Cancel`, `HttpStatusCode`
   - `AxiosInstance` lacks the extension of the `axios` instance from step 3 above
 
+</div>
 </div>
 
 ---
 
 ##### Basic Axios Usage
-# 🔍 Source Code
+# 📝 Supplement
 
 <br class='hidden' />
 
-補充：從 [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts) 看預設 axios instance 和 `axios.create` 回傳的 instance 差異
+Compare the differences between default axios and instance returned by `axios.create` from [`index.d.ts`](https://github.com/axios/axios/blob/v1.x/index.d.ts)
 
 - Can an `axios.create` instance call `create` if `AxiosInstance` lacks this method?
+  <v-clicks every="1">
 
   - In TypeScript type checking, using `AxiosInstance.create` will show an error
     <img src='/image/axiosInstance-create-TS.jpg' width='80%'/>
   - In JavaScript runtime, using `AxiosInstance.create` still works
-
     ```js
     const instance1 = axios.create({...});
     const instance2 = instance1.create({...});
     instance2.get('/posts/1').then((res) => console.log(res.data)); // Successfully prints data
     ```
 
-    <div class='mt-2'/>
+      <div class='text-sm mt-2' >
 
-    > The `createInstance` called by `axios.create` assigns a function to `instance.create`
+      > The `createInstance` called by `axios.create` assigns a function to `instance.create`
+
+      </div>
+
+  </v-clicks>
 
 ---
 
@@ -349,7 +355,7 @@ layout: cover
 ---
 
 ##### Axios URL Encoding
-# axios 與 fetch 範例
+# Examples of axios and fetch
 
 <div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
 
@@ -413,7 +419,7 @@ receivedQuery: {
 ---
 
 ##### Axios URL Encoding
-# axios 與 fetch 範例
+# Examples of axios and fetch
 
 <div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
 
@@ -453,7 +459,7 @@ receivedQuery: {
 fetch: ManualEncode
 </div>
 
-```js
+```js {*}{maxHeight:'150px'}
 function fetchManualEncode() {
   const search = 'hello world!';
   const symbol = '&$';
@@ -616,8 +622,6 @@ buildURL()  // This is where params are encoded
     - `url`: The base URL (e.g., `"http://www.google.com"`)
     - `params`: An object containing the query parameters to append
     - `options`: Optional configuration for how to encode/serialize the parameters
-        - Can be an object containing serialize function or encode function
-        - Can also be directly passed as a serialize function
 
 ---
 
@@ -699,7 +703,7 @@ export default function buildURL(url, params, options) {
   */
 function AxiosURLSearchParams(params, options) {
   this._pairs = []; // Initialize key-value pairs
-  params && toFormData(params, this, options); // 如果有 params 就呼叫 toFormData，toFormData 會呼叫 append 將 key-pairs 加入 _pairs 陣列
+  params && toFormData(params, this, options); // If params exists, call toFormData which will use append to add key-pairs to the _pairs array
 }
 
 const prototype = AxiosURLSearchParams.prototype;
@@ -760,7 +764,7 @@ function encode(str) {
 </div>
 
 <div class='ml-6 text-sm opacity-[0.8]'>
-The encoding results may differ between axios's encode function and native encodeURIComponent
+The encoding results may differ between axios's <code>encode</code> function and native <code>encodeURIComponent</code>
 </div>
 ---
 
@@ -781,7 +785,7 @@ The encoding results may differ between axios's encode function and native encod
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### Astra apiClient
 - `url.searchParams.append` 一樣會進行編碼 ✅
 ```js
@@ -805,7 +809,7 @@ const buildUrl = (endpoint: string, params?: Record<string, unknown>): string =>
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 ```js {*}{maxHeight:'150px'}
 // lib/utils.js
@@ -832,7 +836,7 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 - `kindOf`: logic to check if it's an instance of a specific type
   ```js
@@ -853,7 +857,7 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 - `isURLSearchParams` 實際呼叫流程
   ```js
@@ -871,7 +875,7 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 Q1: 為什麼 `kindOf` 是用 `Object.prototype.toString.call()` 而不是 `Object.prototype.toString()`?
   - 直接呼叫 `object.toString()` 時，大多數物件都會覆蓋繼承自 `Object.prototype` 的 `toString` 方法
@@ -885,7 +889,7 @@ Q1: 為什麼 `kindOf` 是用 `Object.prototype.toString.call()` 而不是 `Obje
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 Q1: 為什麼 `kindOf` 是用 `Object.prototype.toString.call()` 而不是 `Object.prototype.toString()`?
   - `Object.prototype.toString` 的原始實現會回傳物件的內部 `[[Class]]` 屬性
@@ -911,7 +915,7 @@ new Date().toString()     // "Mon Jan 01 2024 12:00:00 GMT+0800"
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
   - 跨域（Cross-realm）支援
@@ -934,9 +938,8 @@ Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `inst
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
   - 原始型別（Primitives）處理
     ```js
     // Object.prototype.toString.call()
@@ -953,7 +956,7 @@ Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `inst
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
   - `null` 和 `undefined` 處理
@@ -967,10 +970,10 @@ Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `inst
     undefined instanceof Object // false
     ```
 
----
+<!-- ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
 <div class='ml-6'>
@@ -980,14 +983,14 @@ Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `inst
 - 不受原型鏈影響
 - 對內建型別有可靠的檢查
 
-</div>
+</div> -->
 
 
 
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
   - 對於這三種特定類型，兩種方法的差異較小
@@ -1011,7 +1014,7 @@ Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
 - 差異較小的原因
@@ -1022,7 +1025,7 @@ Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
 - 唯一主要差異：跨域情境
@@ -1041,7 +1044,7 @@ Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 
 ---
 
 ##### Axios URL Encoding
-# Supplement
+# 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
 
@@ -1056,14 +1059,13 @@ layout: quote
 ```
 
 ##### Axios URL Encoding
-# Summary
+# 🧠 Summary
 
 <br class='hidden' />
 
+When we call request functions like `axios.get`, Axios uses `buildURL` to combine the base URL and params object into a complete URL. 
 
-When we call request functions like `axios.get`, Axios uses `buildURL` to combine the base URL and params object into a complete URL. It properly handles parameter encoding, removes anchors (`#`), processes existing query parameters (`?`), ensuring the generated URL is correctly formatted and secure
-
-
+It properly handles parameter encoding, removes anchors (`#`), processes existing query parameters (`?`), ensuring the generated URL is correctly formatted and secure.
 
 ---
 
@@ -1072,7 +1074,6 @@ layout: cover
 ```
 
 # Axios Request and Response Transformation
-
 
 
 ---
@@ -1090,10 +1091,609 @@ layout: cover
 ---
 
 ##### Axios Request and Response Transformation
-
-
+# Examples of axios and fetch
   
+<div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
 
+<div />
+
+###### code
+
+###### console
+
+<v-clicks :every='3'>
+
+<div class="my-auto leading-6 text-base opacity-75">
+axios: postJson
+</div>
+
+```js {*}{maxHeight:'150px'}
+function axiosPostJson() {
+  const data = {
+    name: 'John Doe',
+    age: 30,
+    city: 'New York',
+  };
+  const response = await axios.post(`${API_URL}/json-request`, data);
+
+  console.log('request data:', data);
+  console.log('response.data:', response.data);
+}
+```
+
+```js {*}{maxHeight:'120px'}
+request data: {
+  name: 'John Doe', 
+  age: 30, 
+  city: 'New York'
+}
+response.data: {{
+  message: 'JSON request received', 
+  receivedData: {…}
+}}
+```
+
+<div class="my-auto leading-6 text-base opacity-75">
+fetch: postJson
+</div>
+
+```js {*}{maxHeight:'150px'}
+function fetchPostJson() {
+  const data = {
+    name: 'John Doe',
+    age: 30,
+    city: 'New York',
+  };
+
+  const response = await fetch(`${API_URL}/json-request`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  const result = await response.json();
+  console.log('request data:', data);
+  console.log('response.json():', result);
+}
+```
+
+```js {*}{maxHeight:'120px'}
+request data: {
+  name: 'John Doe', 
+  age: 30, 
+  city: 'New York'
+}
+response.data: {{
+  message: 'JSON request received', 
+  receivedData: {…}
+}}
+```
+
+
+</v-clicks>
+
+</div>
+
+<div class='text-xs opacity-75 mt-6 text-end' v-click>
+更多請見 DEMO
+</div>
+
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+
+<br class='hidden'/>
+
+Axios request and response transformation is implemented in [`lib/defaults/index.js`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js)
+
+### When does Axios call `transformRequest` and `transformResponse`?
+
+When you call `axios.get()`, here's what happens:
+
+1. The request starts in the Axios class's` _request` method ([`lib/core/Axios.js`](https://github.com/axios/axios/blob/v1.x/lib/core/Axios.js)). This is the core method that handles all requests.
+2. Inside `_request`, after handling interceptors, it calls `dispatchRequest`:
+<div class='ml-6'>
+```js {all|5}{maxHeight:'120px'}
+// lib/core/Axios.js
+_request(configOrUrl, config) {
+    // ... 
+    try {
+      promise = dispatchRequest.call(this, newConfig);
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    // ...
+}
+```
+</div>
+
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+
+### When does Axios call `transformRequest` and `transformResponse`?
+
+3. In `dispatchRequest`, it first transforms the request data:
+<div class='ml-6'>
+```js {all|2,4}
+// lib/core/dispatchRequest.js
+config.data = transformData.call(
+  config,
+  config.transformRequest
+);
+```
+</div>
+
+4. In `transformData`, it iterate through all transform functions:
+<div class='ml-6'>
+
+```js {all|8-11}{maxHeight:'150px'}
+// lib/core/transformData.js
+export default function transformData(fns, response) {
+  const config = this || defaults;
+  const context = response || config;
+  const headers = AxiosHeaders.from(context.headers);
+  let data = context.data;
+
+  // Iterate through all transform functions
+  utils.forEach(fns, function transform(fn) {
+    data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
+  });
+
+  headers.normalize();
+  return data;
+}
+```
+</div>
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+
+### When does Axios call `transformRequest` and `transformResponse`?
+5. After transformation, `dispatchRequest` then gets the appropriate adapter (XHR for browsers, HTTP for Node.js) and calls it:
+<div class='ml-6'>
+```js
+// lib/core/dispatchRequest.js
+const adapter = adapters.getAdapter(config.adapter || defaults.adapter);
+return adapter(config)
+```
+</div>
+
+6. When server response is received, transform response data in `dispatchRequest`:
+<div class='ml-6'>
+
+```js {all|5-11}{maxHeight:'150px'}
+adapter(config).then(
+// Success case
+  function onAdapterResolution(response) {
+  throwIfCancellationRequested(config);
+
+  // Transform response data
+  response.data = transformData.call(
+    config,
+    config.transformResponse,
+    response
+  );
+
+  response.headers = AxiosHeaders.from(response.headers);
+
+  return response;
+}, 
+// Error case, also gets transformed
+function onAdapterRejection(reason) {
+  if (!isCancel(reason)) {
+    throwIfCancellationRequested(config);
+
+    // Transform response data
+    if (reason && reason.response) {
+      reason.response.data = transformData.call(
+        config,
+        config.transformResponse,
+        reason.response
+      );
+      reason.response.headers = AxiosHeaders.from(reason.response.headers);
+    }
+  }
+
+  return Promise.reject(reason);
+}
+)
+```
+</div>
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+
+### When does Axios call `transformRequest` and `transformResponse`?
+```js {*}{maxHeight:'320px'}
+axios.get()
+    │
+    ▼
+Axios._request()
+    │
+    ▼
+dispatchRequest()
+    │
+    ├─ Transform Request Phase
+    │   └─ transformRequest
+    │       ├─ Check data type
+    │       ├─ Handle special data types (FormData, Blob, etc.)
+    │       └─ JSON stringify if necessary
+    │
+    ▼
+xhrAdapter()
+    │
+    ▼
+resolveConfig()
+    │
+    ▼
+buildURL()  // This is where params are encoded
+    │
+    ▼
+Send HTTP Request
+    │
+    ▼
+Receive Response
+    │
+    ▼
+Transform Response Phase
+    ├─ transformResponse
+    │   ├─ Check response type
+    │   ├─ Handle special response types
+    │   └─ Automatic JSON parsing (if applicable)
+    │
+    ▼
+Return Final Response
+```
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+- `transformRequest` 和 `transformResponse` 是作為參數傳入 `transformData` 做處理的
+<div class='ml-6'>
+
+```js
+// lib/core/dispatchRequest.js
+config.data = transformData.call(
+    config, // config 成為 transformData function 中的 this
+    config.transformRequest  // config.transformRequest 成為 transformData function 第一個參數 fns
+);
+```
+```js {*}{maxHeight:'200px'}
+// lib/core/transformData.js
+function transformData(fns, response) {
+  const config = this || defaults;  // 'this' is the config passed via .call()
+  const context = response || config;  // since no response passed, context = config
+  const headers = AxiosHeaders.from(context.headers);
+  let data = context.data;  // gets the request data
+
+  utils.forEach(fns, function transform(fn) { // 遍歷 fns 陣列中的每個 transform function
+    // 呼叫每個 function 並傳入要轉換的 data，normalized headers 以及 response status（或 undefined）
+    data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
+  });
+
+  headers.normalize();
+  return data;
+}
+```
+</div>
+
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+<div class='text-sm opacity-80'>
+<code>transformRequest</code>是一個 array，內有 transform function
+</div>
+
+```js {*}{maxHeight:'320px'}
+// lib/defaults/index.js
+transformRequest: [function transformRequest(data, headers) {
+  const contentType = headers.getContentType() || '';
+  const hasJSONContentType = contentType.indexOf('application/json') > -1;
+  const isObjectPayload = utils.isObject(data);
+
+  if (isObjectPayload && utils.isHTMLForm(data)) {
+    data = new FormData(data);
+  }
+
+  const isFormData = utils.isFormData(data);
+
+  if (isFormData) {
+    return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
+  }
+
+  if (utils.isArrayBuffer(data) ||
+    utils.isBuffer(data) ||
+    utils.isStream(data) ||
+    utils.isFile(data) ||
+    utils.isBlob(data) ||
+    utils.isReadableStream(data)
+  ) {
+    return data;
+  }
+  if (utils.isArrayBufferView(data)) {
+    return data.buffer;
+  }
+  if (utils.isURLSearchParams(data)) {
+    headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
+    return data.toString();
+  }
+
+  let isFileList;
+
+  if (isObjectPayload) {
+    if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
+      return toURLEncodedForm(data, this.formSerializer).toString();
+    }
+
+    if ((isFileList = utils.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
+      const _FormData = this.env && this.env.FormData;
+
+      return toFormData(
+        isFileList ? {'files[]': data} : data,
+        _FormData && new _FormData(),
+        this.formSerializer
+      );
+    }
+  }
+
+  if (isObjectPayload || hasJSONContentType ) {
+    headers.setContentType('application/json', false);
+    return stringifySafely(data);
+  }
+
+  return data;
+}]
+```
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+- Initial Checks
+  ```js
+  const contentType = headers.getContentType() || ''; // Gets the content type from headers
+  const hasJSONContentType = contentType.indexOf('application/json') > -1; // Checks if it's JSON content type
+  const isObjectPayload = utils.isObject(data); // Checks if data is an object
+  ```
+- Handle Form Data
+  ```js
+  if (isObjectPayload && utils.isHTMLForm(data)) {
+      data = new FormData(data); // Converts HTML forms to FormData
+    }
+
+    const isFormData = utils.isFormData(data); // Check if data is FormData, FormData is typically used for: File uploads, Form submissions, Multipart data
+
+    if (isFormData) { // If it's FormData instance
+    // If content-type has application/json, converts FormData to plain object and then converts object to JSON string
+    // If content-type is not application/json, remain FormData as it is, this is typical for file uploads where you want to keep the multipart/form-data format
+      return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
+    }
+  ```
+
+
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+- Handle Binary Data Types
+  ```js
+  if (utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data) ||
+      utils.isReadableStream(data)
+  ) { 
+  // Returns binary data types unchanged
+      return data;
+  }
+  ```
+
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+- Handle Special Data Types
+  ```js
+  if (utils.isArrayBufferView(data)) {  // Converts ArrayBufferView to buffer
+      return data.buffer;
+  }
+  if (utils.isURLSearchParams(data)) {  // Converts URLSearchParams to string
+      headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
+      return data.toString();
+  }
+  ```
+  - `ArrayBufferView`: ArrayBufferView represents typed array views of binary data (ref: [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray))
+    - Why extract `.buffer`?
+      - ArrayBufferView is a view into an ArrayBuffer, the actual binary data is in the `.buffer` property
+      - We want to send the raw buffer, not the view
+
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+- Handle Object Data
+<div class='ml-6'>
+
+```js {*}{maxHeight:'280px'}
+if (isObjectPayload) {
+    // Convert data into URL-encoded format
+    // Can handle such as:
+    // - Simple data: { name: 'John' } → "name=John"
+    // - Nested objects: { user: { name: 'John' } } → "user[name]=John"
+    // Used for:
+    // - API endpoints expecting URL-encoded data
+    // - Traditional form submissions
+    // - Query parameters
+    // - Legacy system compatibility
+    if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
+        return toURLEncodedForm(data, this.formSerializer).toString();
+    }
+
+    // Multipart Form Data
+    // Used for:
+    // - File uploads (single or multiple files)
+    // - Mixed content (files + text data together)
+    // - Binary data handling
+    // - Large data transfers
+    // Cannot be handled by URL-encoded format
+    if ((isFileList = utils.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
+        const _FormData = this.env && this.env.FormData; // Creates appropriate FormData instance
+        return toFormData(
+            isFileList ? {'files[]': data} : data, // Handle files array
+            _FormData && new _FormData(),  // Create FormData
+            this.formSerializer  // Serialize complex data
+        );
+    }
+}
+```
+</div>
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+- Handle JSON Data 🌟
+<div class='text-sm opacity-80 ml-6'>
+In the general case, if you're sending an object and haven't specified a special content type (like form-urlencoded or multipart/form-data), Axios will use this default JSON handling
+</div>
+
+<div class='ml-6' v-click>
+```js
+if (isObjectPayload || hasJSONContentType) {
+    headers.setContentType('application/json', false); // Sets JSON content type header
+    return stringifySafely(data); // Converts objects to JSON string
+}
+```
+</div>
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+### What does [`transformResponse`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+<div class='text-sm opacity-80'>
+<code>transformResponse</code>是一個 array，內有 transform function
+</div>
+
+```js {*}{maxHeight:'320px'}
+transformResponse: [function transformResponse(data) {
+  const transitional = this.transitional || defaults.transitional;
+  const forcedJSONParsing = transitional && transitional.forcedJSONParsing;
+  const JSONRequested = this.responseType === 'json';
+  
+  // Special Data Types: Return as-is for Response or ReadableStream
+  if (utils.isResponse(data) || utils.isReadableStream(data)) {
+    return data;  
+  }
+  
+  // JSON Parsing
+  if (data && utils.isString(data) && ((forcedJSONParsing && !this.responseType) || JSONRequested)) {
+    const silentJSONParsing = transitional && transitional.silentJSONParsing; // Don't throw errors on parse failures
+    const strictJSONParsing = !silentJSONParsing && JSONRequested; // Throw errors on parse failures when JSON is requested
+
+    try {  // Converts JSON strings to JavaScript objects
+      return JSON.parse(data); 
+    } catch (e) {
+      if (strictJSONParsing) {
+        if (e.name === 'SyntaxError') {
+          throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
+        }
+        throw e;
+      }
+    }
+  }
+  
+  // Default: Return data as-is if no transformation needed
+  return data;
+}]
+```
+
+
+---
+
+##### Axios Request and Response Transformation
+# 🔍 Source Code
+### What does [`transformResponse`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+
+- By default, `JSON.parse(data)` will not throw an error when parsing fails
+  ```js
+  // axios config(https://github.com/axios/axios)
+  // transitional options for backward compatibility that may be removed in the newer versions
+    transitional: {
+      // silent JSON parsing mode
+      // `true`  - ignore JSON parsing errors and set response.data to null if parsing failed (old behaviour)
+      // `false` - throw SyntaxError if JSON parsing failed (Note: responseType must be set to 'json')
+      silentJSONParsing: true, // default value for the current Axios version
+
+      // try to parse the response string as JSON even if `responseType` is not 'json'
+      forcedJSONParsing: true,
+
+      // throw ETIMEDOUT error instead of generic ECONNABORTED on request timeouts
+      clarifyTimeoutError: false,
+    },
+  ```
+
+---
+
+```yaml
+layout: quote
+```
+
+##### Axios Request and Response Transformation
+# 🧠 Summary
+
+<br class='hidden' />
+
+When we call request functions like `axios.post`, Axios automatically applies `transformRequest` to serialize the request data (e.g., using `JSON.stringify`) before sending it. 
+
+After receiving the response, it applies `transformResponse` to deserialize the response data (e.g., using `JSON.parse`). These transformations are handled by the internal `transformData` function, which iterates through an array of transform functions passed via the config. 
+
+---
+
+```yaml
+layout: cover
+```
+
+# Axios Error Handling
+
+---
+
+# Axios Error Handling
+
+- What does Axios do for us?
+  - `validateStatus` allows customizing error criteria (by default only accepts `2xx`, all non-`2xx` responses are treated as errors)
+  - `AxiosError` built-in error class provides error codes, error types, and other fields (like code, response)
+  - `catch(error)` automatically differentiates error types internally (network errors, response errors, request errors)
+
+---
+
+
+##### Axios Error Handling
+# Examples of axios and fetch
 
 ---
 
@@ -1513,4945 +2113,12 @@ database "MySql" {
 
 Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML Diagrams](https://sli.dev/features/plantuml)
 
----
 
-foo: bar
-dragPos:
-square: 691,32,167,\_,-16
 
----
 
-dragPos:
-square: -114,0,0,0
 
----
 
-dragPos:
-square: -114,0,0,0
 
----
 
-dragPos:
-square: -114,0,0,0
 
----
 
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
-
-dragPos:
-square: -114,0,0,0
-
----
