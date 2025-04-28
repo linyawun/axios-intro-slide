@@ -372,7 +372,7 @@ axios: ParamsInUrl
 </div>
 
 ```js
-function axiosParamsInUrl() {
+async function axiosParamsInUrl() {
   const search = 'hello world!';
   const symbol = '&$';
   const response = await axios.get(
@@ -395,7 +395,7 @@ axios: AutoEncodeParams
 </div>
 
 ```js
-function axiosAutoEncodeParams() {
+async function axiosAutoEncodeParams() {
   const search = 'hello world!';
   const symbol = '&$';
   const response = await axios.get(`${API_URL}/url-encoded`, {
@@ -436,7 +436,7 @@ fetch: WithoutEncode
 </div>
 
 ```js
-function fetchWithoutEncode() {
+async function fetchWithoutEncode() {
   const search = 'hello world!';
   const symbol = '&$';
   const res = await fetch(
@@ -460,7 +460,7 @@ fetch: ManualEncode
 </div>
 
 ```js {*}{maxHeight:'150px'}
-function fetchManualEncode() {
+async function fetchManualEncode() {
   const search = 'hello world!';
   const symbol = '&$';
   const res = await fetch(
@@ -1108,7 +1108,7 @@ axios: postJson
 </div>
 
 ```js {*}{maxHeight:'150px'}
-function axiosPostJson() {
+async function axiosPostJson() {
   const data = {
     name: 'John Doe',
     age: 30,
@@ -1138,7 +1138,7 @@ fetch: postJson
 </div>
 
 ```js {*}{maxHeight:'150px'}
-function fetchPostJson() {
+async function fetchPostJson() {
   const data = {
     name: 'John Doe',
     age: 30,
@@ -1177,7 +1177,7 @@ response.data: {{
 </div>
 
 <div class='text-xs opacity-75 mt-6 text-end' v-click>
-更多請見 DEMO
+For more, see the DEMO.
 </div>
 
 
@@ -1360,7 +1360,7 @@ Return Final Response
 
 ##### Axios Request and Response Transformation
 # 🔍 Source Code
-- `transformRequest` 和 `transformResponse` 是作為參數傳入 `transformData` 做處理的
+- `transformRequest` and `transformResponse` are passed as arguments to transformData for processing.
 <div class='ml-6'>
 
 ```js
@@ -1396,7 +1396,7 @@ function transformData(fns, response) {
 # 🔍 Source Code
 ### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
 <div class='text-sm opacity-80'>
-<code>transformRequest</code>是一個 array，內有 transform function
+<code>transformRequest</code> is an array containing transform functions.
 </div>
 
 ```js {*}{maxHeight:'320px'}
@@ -1596,7 +1596,7 @@ if (isObjectPayload || hasJSONContentType) {
 # 🔍 Source Code
 ### What does [`transformResponse`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
 <div class='text-sm opacity-80'>
-<code>transformResponse</code>是一個 array，內有 transform function
+<code>transformResponse</code> is an array containing transform functions.
 </div>
 
 ```js {*}{maxHeight:'320px'}
@@ -1694,6 +1694,334 @@ layout: cover
 
 ##### Axios Error Handling
 # Examples of axios and fetch
+
+<div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
+
+<div />
+
+###### code
+
+###### console
+
+<v-clicks :every='3'>
+
+<div class="my-auto leading-6 text-base opacity-75">
+axios: 200 response
+</div>
+
+```js {*}{maxHeight:'150px'}
+async function axiosSuccessResponse() {
+  try {
+    const response = await axios.get(`${API_URL}/success`)
+    console.log('Success:', response.data)
+  } catch (error) {
+    console.log('Error:', error.response.data)
+  }
+}
+```
+
+```js {*}{maxHeight:'120px'}
+Success: {
+    "status": "success",
+    "data": {
+        "message": "Operation successful"
+    }
+}
+```
+
+<div class="my-auto leading-6 text-base opacity-75">
+fetch: 200 response
+</div>
+
+```js {*}{maxHeight:'150px'}
+async function fetchSuccessResponse() {
+  try {
+    const response = await fetch(`${API_URL}/success`)
+    const data = await response.json()
+    console.log('Success:', data)
+  } catch (error) {
+    console.log('Error:', error.message)
+  }
+}
+```
+
+```js {*}{maxHeight:'120px'}
+Success: {
+    "status": "success",
+    "data": {
+        "message": "Operation successful"
+    }
+}
+```
+
+
+</v-clicks>
+
+</div>
+
+
+---
+
+
+##### Axios Error Handling
+# Examples of axios and fetch
+
+<div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
+
+<div />
+
+###### code
+
+###### console
+
+<v-clicks :every='3'>
+
+<div class="my-auto leading-6 text-base opacity-75">
+axios: 404 response
+</div>
+
+```js {*}{maxHeight:'150px'}
+async function axiosNotFoundError() {
+  try {
+    const response = await axios.get(`${API_URL}/not-found`)
+    console.log('Success:', response.data)
+  } catch (error) {
+    console.log('Error:', error.response.data)
+  }
+}
+```
+
+```js {*}{maxHeight:'120px'}
+Error: {
+    "status": "error",
+    "message": "Resource not found"
+}
+```
+
+<div class="my-auto leading-6 text-base opacity-75">
+fetch: 404 response
+</div>
+
+```js {*}{maxHeight:'150px'}
+async function fetchNotFoundError() {
+  try {
+    const response = await fetch(`${API_URL}/not-found`)
+    const data = await response.json()
+    console.log('Success:', data)
+  } catch (error) {
+    console.log('Error:', error.message)
+  }
+}
+```
+
+```js {*}{maxHeight:'120px'}
+Success: {
+    "status": "error",
+    "message": "Resource not found"
+}
+```
+
+
+</v-clicks>
+
+</div>
+
+<div class='text-xs opacity-75 mt-6 text-end' v-click>
+For more, see the DEMO.
+</div>
+
+
+---
+
+##### Axios Error Handling
+# 🔍 Source Code
+
+<br class='hidden'/>
+
+Axios’s default error handling is in the `validateStatus` function in [`defaults/index.js`](https://github.com/axios/axios/blob/f31d2bab75286ac0d27d3da181899682af0c0fb9/lib/defaults/index.js#L145C3-L147C5)
+
+### When does Axios call `validateStatus`? 
+
+When you call `axios.get()`, here's what happens:
+
+1. The request starts in the Axios class's `_request` method and goes through the dispatch and adapter process.
+
+
+
+---
+
+##### Axios Error Handling
+# 🔍 Source Code
+
+<br class='hidden'/>
+
+### When does Axios call `validateStatus`? 
+
+2. Inside the adapter (e.g., xhr adapter), after receiving the response, it calls `settle`:
+
+```js {all|24-32}{maxHeight:'280px'}
+// lib/adapters/xhr.js
+export default isXHRAdapterSupported && function (config) {
+  return new Promise(function dispatchXhrRequest(resolve, reject) {
+  // ... make request ...
+
+  function onloadend() {
+    if (!request) {
+      return;
+    }
+    // Prepare the response
+    const responseHeaders = AxiosHeaders.from(
+      'getAllResponseHeaders' in request && request.getAllResponseHeaders()
+    );
+    const responseData = !responseType || responseType === 'text' || responseType === 'json' ?
+      request.responseText : request.response;
+    const response = {
+      data: responseData,
+      status: request.status,
+      statusText: request.statusText,
+      headers: responseHeaders,
+      config,
+      request
+    };
+
+    settle(function _resolve(value) {
+      resolve(value);
+      done();
+    }, function _reject(err) {
+      reject(err);
+      done();
+    }, response);
+
+    // Clean up request
+    request = null;
+  }
+
+  // ...    
+
+  // Use onloadend if available
+  request.onloadend = onloadend;
+
+  // ...  
+  });
+}
+```
+
+---
+
+##### Axios Error Handling
+# 🔍 Source Code
+
+<br class='hidden'/>
+
+### When does Axios call `validateStatus`? 
+
+3. Inside `settle`, it uses `validateStatus` to determine success or failure:
+
+```js {all|3-5}
+// lib/core/settle.js
+export default function settle(resolve, reject, response) {
+  const validateStatus = response.config.validateStatus;
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    reject(new AxiosError(
+      'Request failed with status code ' + response.status,
+      [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
+      response.config,
+      response.request,
+      response
+    ));
+  }
+}
+```
+
+---
+
+##### Axios Error Handling
+# 🔍 Source Code
+
+<br class='hidden'/>
+
+### When does Axios call `validateStatus`? 
+
+```js {*}{maxHeight:'320px'}
+axios.get()
+    │
+    ▼
+Axios._request()
+    │
+    ▼
+dispatchRequest()
+    │
+    ├─ transformRequest
+    │   ├─ Check data type
+    │   ├─ Handle special data types
+    │   └─ JSON stringify if necessary
+    │       
+    ▼
+xhrAdapter()
+    │
+    ▼
+resolveConfig()
+    │
+    ▼
+buildURL()  // This is where params are encoded
+    │
+    ▼
+Send HTTP Request
+    │
+    ▼
+Receive Response
+    │
+    ▼
+settle()  // Determine success/failure
+    │
+    ├─ Get validateStatus from config
+    │
+    └─ Check Response Status
+        │
+        ├─ status 2xx ─────────────────────┐
+        │   (or custom validation)         │
+        │                                  ▼
+        │                       Transform Response (Success)
+        │                                  │
+        │                                  ▼
+        │                           Resolve Promise
+        │                          with transformed data
+        │
+        └─ Non-2xx ───────────────────────┐
+            (or validation fails)         │
+                                          ▼
+                              Transform Response (Error)*
+                                          │
+                                          ▼
+                                  Reject Promise
+                              with transformed error data
+```
+
+
+
+---
+
+##### Axios Error Handling
+# 🔍 Source Code
+### What does [`validateStatus`](https://github.com/axios/axios/blob/f31d2bab75286ac0d27d3da181899682af0c0fb9/lib/defaults/index.js#L145C3-L147C5) do?
+- `validateStatus` function takes an HTTP status code as an argument and returns a boolean to determine whether the status code represents success
+  ```js
+  // defaults/index.js
+  validateStatus: function (status) {
+      return status >= 200 && status < 300; // default
+  }
+  ```
+  - 預設認定 2xx 狀態碼為成功
+  - 可以自定義成功狀態
+    ```js
+    axios.get('/api', {
+        validateStatus: (status) => {
+            return status < 500; // 將所有非 500 錯誤視為成功
+        }
+    })
+    ```
 
 ---
 
