@@ -1838,7 +1838,7 @@ For more, see the DEMO.
 
 <br class='hidden'/>
 
-Axios’s default error handling is in the `validateStatus` function in [`defaults/index.js`](https://github.com/axios/axios/blob/f31d2bab75286ac0d27d3da181899682af0c0fb9/lib/defaults/index.js#L145C3-L147C5)
+Axios's default error handling is in the `validateStatus` function in [`defaults/index.js`](https://github.com/axios/axios/blob/f31d2bab75286ac0d27d3da181899682af0c0fb9/lib/defaults/index.js#L145C3-L147C5)
 
 ### When does Axios call `validateStatus`? 
 
@@ -2013,8 +2013,8 @@ settle()  // Determine success/failure
       return status >= 200 && status < 300; // default
   }
   ```
-  - 預設認定 2xx 狀態碼為成功
-  - 可以自定義成功狀態
+  - By default, 2xx status codes are considered successful
+  - Success status can be customized
     ```js
     axios.get('/api', {
         validateStatus: (status) => {
@@ -2022,6 +2022,76 @@ settle()  // Determine success/failure
         }
     })
     ```
+---
+
+##### Axios Error Handling
+# 🔍 Source Code
+### What does [`settle`](https://github.com/axios/axios/blob/v1.x/lib/core/settle.js) do?
+
+- `settle` 函式利用 `validateStatus` 判斷狀態
+
+
+```js {*}{maxHeight:'260px'}
+// 接收三個參數：Promise 的 resolve 函式, Promise 的 reject 函式,  HTTP 回應物件
+export default function settle(resolve, reject, response) {
+  const validateStatus = response.config.validateStatus;
+
+  // 三種情況會呼叫 resolve:
+  // 1. !response.status：沒有狀態碼
+  // 2. !validateStatus：沒有驗證函式
+  // 3. validateStatus(response.status)：驗證通過
+  if (!response.status || !validateStatus || validateStatus(response.status)) {
+    resolve(response);
+  } else {
+    // 驗證失敗，建立 AxiosError 並回傳錯誤
+    reject(new AxiosError(
+      'Request failed with status code ' + response.status,
+      // 根據狀態碼決定錯誤類型：
+      // index 0: ERR_BAD_REQUEST  - 用於 4xx 錯誤
+      // index 1: ERR_BAD_RESPONSE - 用於 5xx 錯誤
+      // e.g. 404 經過 Math.floor(404 / 100) - 4 會得到 0，所以取 index 0 ERR_BAD_REQUEST；500  經過 Math.floor(404 / 100) - 4 會得到 1．所以取 index 1 ERR_BAD_RESPONSE
+      [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
+      response.config,
+      response.request,
+      response
+    ));
+  }
+}
+```
+
+---
+
+
+
+```yaml
+layout: quote
+```
+
+##### Axios Error Handling
+# 🧠 Summary
+
+<br class='hidden' />
+
+When we call request functions like `axios.get`, Axios handles errors through its `settle` function, which validates response status codes (treating non-2xx as errors by default) and creates standardized `AxiosError` objects. 
+
+It transforms error response data just like successful responses, ensuring consistent error handling and providing detailed failure information for debugging.
+
+
+---
+
+# Other Axios Features
+
+- Interceptors handling
+- Request cancellation
+- Timeout handling
+- Upload/download progress tracking (`onUploadProgress`, `onDownloadProgress`)
+- XSRF protection (xsrfCookieName/xsrfHeaderName)
+- ...
+
+---
+
+# Axios Request Flow
+
 
 ---
 
