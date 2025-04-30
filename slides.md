@@ -874,7 +874,8 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
 
 ##### Axios URL Encoding
 # 📝 Supplement
-### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+<br class='hidden'/>
+
 Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.prototype.toString()`?
   - Most objects override the default `toString` method when called directly
     ```js
@@ -888,7 +889,8 @@ Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.
 
 ##### Axios URL Encoding
 # 📝 Supplement
-### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+<br class='hidden'/>
+
 Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.prototype.toString()`?
   - The original implementation of `Object.prototype.toString` returns object's `[[Class]]` property
     - `call` enforces this native behavior
@@ -912,21 +914,22 @@ Object.prototype.toString.call([1, 2, 3])     // "[object Array]"
 
 ##### Axios URL Encoding
 # 📝 Supplement
-### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
-  - 跨域（Cross-realm）支援
+<br class='hidden'/>
+
+Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanceof`?
+  - Cross-realm support
     ```js
-    // 在 iframe 情境
+    // In an iframe context
     const iframe = document.createElement('iframe');
     document.body.appendChild(iframe);
     const iframeArray = iframe.contentWindow.Array;
     const arr = new iframeArray();
 
     // Object.prototype.toString.call()
-    toString.call(arr)  // '[object Array]' → 正確識別
+    toString.call(arr)  // '[object Array]' → correctly identified ✅
 
     // instanceof
-    arr instanceof Array  // false → 無法正確識別跨域物件
+    arr instanceof Array  // false → cannot correctly identify cross-realm objects ⛔
     ```
 
 
@@ -935,8 +938,10 @@ Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `inst
 
 ##### Axios URL Encoding
 # 📝 Supplement
-### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-  - 原始型別（Primitives）處理
+<br class='hidden'/>
+
+Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanceof`?
+  - Handling Primitive Types
     ```js
     // Object.prototype.toString.call()
     toString.call('string')  // '[object String]'
@@ -953,9 +958,10 @@ Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `inst
 
 ##### Axios URL Encoding
 # 📝 Supplement
-### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
-  - `null` 和 `undefined` 處理
+<br class='hidden'/>
+
+Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanceof`?
+  - Handling `null` and `undefined`
     ```js
     // Object.prototype.toString.call()
     toString.call(null)      // '[object Null]'
@@ -971,7 +977,7 @@ Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `inst
 ##### Axios URL Encoding
 # 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `instanceof`?
+Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanceof`?
 <div class='ml-6'>
 
 使用 `toString.call(thing)` 可保證一致性行為：
@@ -987,9 +993,10 @@ Q2: 為什麼 `kindOf` 要用 `Object.prototype.toString.call()` 而不是 `inst
 
 ##### Axios URL Encoding
 # 📝 Supplement
-### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
-  - 對於這三種特定類型，兩種方法的差異較小
+<br class='hidden'/>
+
+Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
+  - Both methods work similarly for these three types
     ```js
     // 兩種方法都可行
     const formData = new FormData();
@@ -1011,41 +1018,44 @@ Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 
 
 ##### Axios URL Encoding
 # 📝 Supplement
-### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
-- 差異較小的原因
-  - 都是建構函式建立的實例（不是原始型別）
-  - 都是內建型別
-  - 一般使用時較少跨域情境
+<br class='hidden'/>
+
+Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
+- Why differences are minimal
+  - Both are instances created by constructors (not primitive types)
+  - Both are built-in types
+  - Cross-realm scenarios are rare in normal usage
 
 ---
 
 ##### Axios URL Encoding
 # 📝 Supplement
-### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
-- 唯一主要差異：跨域情境
+<br class='hidden'/>
+
+Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
+- Main difference: cross-realm scenarios
   ```js
-  // 在 iframe 中
+  // In an iframe context
   const iframe = document.createElement('iframe');
   document.body.appendChild(iframe);
   const iframeFormData = new iframe.contentWindow.FormData();
 
-  // Object.prototype.toString.call() - 可運作 ✅
+  // Object.prototype.toString.call() - works ✅
   toString.call(iframeFormData) === '[object FormData]'  // true
 
-  // instanceof - 可能失敗 🔺
-  iframeFormData instanceof FormData  // 在某些瀏覽器中會是 false
+  // instanceof - may fail 🔺
+  iframeFormData instanceof FormData  // returns false in some browsers
   ```
 ---
 
 ##### Axios URL Encoding
 # 📝 Supplement
-### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q3: 如果只需檢查 FormData、Blob 和 ArrayBuffer，`toString.call(thing)` 和 `instanceof` 有差異嗎？
+<br class='hidden'/>
 
-- 如果是框架/函式庫開發：`Object.prototype.toString.call()` 更安全
-- 如果是一般應用開發：這三種類型用 `instanceof` 就足夠
+Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
+
+- For framework/library development: `Object.prototype.toString.call()` is safer
+- For regular application development: `instanceof` is sufficient for these three types
 
 
 ---
