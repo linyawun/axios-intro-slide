@@ -459,14 +459,12 @@ receivedQuery: {
 fetch: ManualEncode
 </div>
 
-```js {*}{maxHeight:'150px'}
+```js 
 async function fetchManualEncode() {
-  const search = 'hello world!';
-  const symbol = '&$';
+  const search = encodeURIComponent('hello world!')
+  const symbol = encodeURIComponent('&$');
   const res = await fetch(
-    `${API_URL}/url-encoded?search=${encodeURIComponent(
-        search
-      )}&symbol=${encodeURIComponent(symbol)}`
+    `${API_URL}/url-encoded?search=${search}&symbol=${symbol}`
   );
   const data = await res.json();
   console.log(data);
@@ -787,7 +785,7 @@ The encoding results may differ between axios's <code>encode</code> function and
 ##### Axios URL Encoding
 # 📝 Supplement
 ### Astra apiClient
-- `url.searchParams.append` 一樣會進行編碼 ✅
+- `url.searchParams.append` also performs encoding ✅
 ```js
 const buildUrl = (endpoint: string, params?: Record<string, unknown>): string => {
   // ...
@@ -828,7 +826,7 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
     // lib/utils.js
     const kindOfTest = (type) => {
       type = type.toLowerCase();
-      return (thing) => kindOf(thing) === type // 回傳一個函式，若 type 是 URLSearchParams，則此函式最終會檢查一個值(thing)是否是 URLSearchParams 類型的 instance
+      return (thing) => kindOf(thing) === type // Returns a function that checks if a value (thing) is an instance of the specified type (e.g., URLSearchParams)
     }
     ```
 
@@ -846,11 +844,11 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
       return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
   })(Object.create(null));
   ```
-  - `Object.prototype.toString` 被調用在一個物件上時，會回傳 `[object Type]` 格式的字串
-    - 對於 `URLSearchParams` 物件，會回傳 `[object URLSearchParams]`
-  - `str.slice(8, -1)` 會去掉 `[object ` 和最後的 `]`，得到 Type
-    - `[object URLSearchParams]` 會變成 `URLSearchParams`
-  - 以 `Object.create(null)` 建立一個純淨的物件作為緩存
+  - When `Object.prototype.toString` is called on an object, it returns an `[object Type]` string
+    - For a `URLSearchParams` object, it returns `[object URLSearchParams]`
+  - `str.slice(8, -1)` removes `[object ` and the trailing `]` to get the Type
+    - `[object URLSearchParams]` becomes `URLSearchParams`
+  - Creates a clean cache with `Object.create(null)`
 
 
 
@@ -859,7 +857,7 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
 ##### Axios URL Encoding
 # 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-- `isURLSearchParams` 實際呼叫流程
+- `isURLSearchParams` execution flow
   ```js
   const params = new URLSearchParams();
   isURLSearchParams(params);
@@ -877,36 +875,34 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
 ##### Axios URL Encoding
 # 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q1: 為什麼 `kindOf` 是用 `Object.prototype.toString.call()` 而不是 `Object.prototype.toString()`?
-  - 直接呼叫 `object.toString()` 時，大多數物件都會覆蓋繼承自 `Object.prototype` 的 `toString` 方法
+Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.prototype.toString()`?
+  - Most objects override the default `toString` method when called directly
     ```js
     const arr = [1, 2, 3];
-    arr.toString()  // 回傳 "1,2,3"
+    arr.toString()  // return "1,2,3"
 
     const date = new Date();
-    date.toString()  // 回傳像 "Mon Jan 01 2024 12:00:00 GMT+0800" 這樣的字串
+    date.toString()  // returns something like "Mon Jan 01 2024 12:00:00 GMT+0800"
     ```
 ---
 
 ##### Axios URL Encoding
 # 📝 Supplement
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
-Q1: 為什麼 `kindOf` 是用 `Object.prototype.toString.call()` 而不是 `Object.prototype.toString()`?
-  - `Object.prototype.toString` 的原始實現會回傳物件的內部 `[[Class]]` 屬性
-    - `call` 方法可強制在任何值上使用原始的 `toString` 實現
+Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.prototype.toString()`?
+  - The original implementation of `Object.prototype.toString` returns object's `[[Class]]` property
+    - `call` enforces this native behavior
 <div class='ml-12'>
   <div class='quote mb-2'>
     To use the base Object.prototype.toString() with an object that has it overridden (or to invoke it on null or undefined), you need to call Function.prototype.call() or Function.prototype.apply() on it, passing the object you want to inspect as the first parameter (called thisArg). (ref: <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString' target='_blank'>Object.prototype.toString()</a>)
   </div>
 
 ```js
-// 使用 call
+// Using call
 Object.prototype.toString.call([1, 2, 3])     // "[object Array]"
-Object.prototype.toString.call(new Date())    // "[object Date]"
 
-// 直接調用 toString
+// Direct toString call
 [1, 2, 3].toString()      // "1,2,3"
-new Date().toString()     // "Mon Jan 01 2024 12:00:00 GMT+0800"
 ```
 </div>
 
@@ -1327,7 +1323,7 @@ dispatchRequest()
     ├─ Transform Request Phase
     │   └─ transformRequest
     │       ├─ Check data type
-    │       ├─ Handle special data types (FormData, Blob, etc.)
+    │       ├─ Handle special data types
     │       └─ JSON stringify if necessary
     │
     ▼
@@ -1826,10 +1822,6 @@ Success: {
 
 </div>
 
-<div class='text-xs opacity-75 mt-6 text-end' v-click>
-For more, see the DEMO.
-</div>
-
 
 ---
 
@@ -2018,7 +2010,7 @@ settle()  // Determine success/failure
     ```js
     axios.get('/api', {
         validateStatus: (status) => {
-            return status < 500; // 將所有非 500 錯誤視為成功
+            return status < 500; // treat all non-500 errors as success
         }
     })
     ```
@@ -2039,17 +2031,18 @@ export default function settle(resolve, reject, response) {
   // 三種情況會呼叫 resolve:
   // 1. !response.status：沒有狀態碼
   // 2. !validateStatus：沒有驗證函式
-  // 3. validateStatus(response.status)：驗證通過
+  // 3. validateStatus(response.status): validation passed
   if (!response.status || !validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
     // 驗證失敗，建立 AxiosError 並回傳錯誤
     reject(new AxiosError(
       'Request failed with status code ' + response.status,
-      // 根據狀態碼決定錯誤類型：
-      // index 0: ERR_BAD_REQUEST  - 用於 4xx 錯誤
-      // index 1: ERR_BAD_RESPONSE - 用於 5xx 錯誤
-      // e.g. 404 經過 Math.floor(404 / 100) - 4 會得到 0，所以取 index 0 ERR_BAD_REQUEST；500  經過 Math.floor(404 / 100) - 4 會得到 1．所以取 index 1 ERR_BAD_RESPONSE
+      // Determine error type based on status code:
+      // index 0: ERR_BAD_REQUEST  - for 4xx errors
+      // index 1: ERR_BAD_RESPONSE - for 5xx errors
+      // e.g. 404 through Math.floor(404 / 100) - 4 gives 0, so use index 0 ERR_BAD_REQUEST; 
+      // 500 through Math.floor(500 / 100) - 4 gives 1, so use index 1 ERR_BAD_RESPONSE
       [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
       response.config,
       response.request,
@@ -2079,7 +2072,8 @@ It transforms error response data just like successful responses, ensuring consi
 
 ---
 
-# Other Axios Features
+# 📝 Supplement
+### Other Axios Features
 
 - Interceptors handling
 - Request cancellation
@@ -2090,24 +2084,42 @@ It transforms error response data just like successful responses, ensuring consi
 
 ---
 
-# Axios Request Flow
+# 📝 Supplement
+### Axios Request Flow
 
 
 ---
 
-# DeepWiki axios
-<br class='hidden' />
+# 📝 Supplement
+### axios/axios | DeepWiki <a href='https://deepwiki.com/axios/axios' target='_blank' class='opacity-75 text-sm'>link</a>
 
-[axios/axios | DeepWiki](https://deepwiki.com/axios/axios)
-<div class='flex gap-2 items-start'>
-  <img src='/image/axiosInstance-deepwiki.png'  width='100%' height='auto' class='max-w-[50%]'/>
+<div class='flex gap-2 mt-2 items-start'>
+  <img src='/image/axiosInstance-deepwiki.png'  width='100%' height='auto' class='max-w-[40%]'/>
   <img src='/image/axiosReqResFlow-deepwiki.png' width='100%' height='auto' class='max-w-[50%]'/>
 </div>
 
 ---
 
+```yaml
+layout: center
+class: text-center
+```
+
+# Thanks for Listening!
+
+
+---
+
 # Reference
 
+- [https://github.com/axios/axios](https://github.com/axios/axios)
+- [https://ithelp.ithome.com.tw/articles/10289064](https://ithelp.ithome.com.tw/articles/10289064)
+- [https://ithelp.ithome.com.tw/articles/10244631](https://ithelp.ithome.com.tw/articles/10244631)
+- [https://www.meticulous.ai/blog/fetch-vs-axios](https://www.meticulous.ai/blog/fetch-vs-axios)
+- [https://hackmd.io/@myrealstory/B1rSnt-NC](https://hackmd.io/@myrealstory/B1rSnt-NC)
+- [https://mini-ghost.dev/posts/axios-source-code-1](https://mini-ghost.dev/posts/axios-source-code-1)
+- [https://mini-ghost.dev/posts/axios-source-code-2](https://mini-ghost.dev/posts/axios-source-code-2)
+- [https://www.cnblogs.com/JohnTsai/p/axios.html](https://www.cnblogs.com/JohnTsai/p/axios.html)
 
 
 
