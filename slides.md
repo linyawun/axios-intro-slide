@@ -862,11 +862,11 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
   const params = new URLSearchParams();
   isURLSearchParams(params);
 
-  // 內部發生的過程：
-  // 1. toString.call(params) 回傳 "[object URLSearchParams]"
-  // 2. slice(8, -1) 得到 "URLSearchParams"
-  // 3. toLowerCase() 得到 "urlsearchparams"
-  // 4. 與傳入的 type 比較，返回 true
+  // Internal process:
+  // 1. toString.call(params) returns "[object URLSearchParams]"
+  // 2. slice(8, -1) gets "URLSearchParams"
+  // 3. toLowerCase() gets "urlsearchparams"
+  // 4. Compare with the input type, returns true
   ```
 
 
@@ -980,10 +980,10 @@ Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanc
 Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanceof`?
 <div class='ml-6'>
 
-使用 `toString.call(thing)` 可保證一致性行為：
-- 跨不同執行環境有一致的行為
-- 不受原型鏈影響
-- 對內建型別有可靠的檢查
+Using  `toString.call(thing)` guarantees consistent behavior:
+- Consistent behavior across different execution environments
+- Not affected by prototype chain
+- Reliable checking for built-in types
 
 </div> -->
 
@@ -1372,8 +1372,8 @@ Return Final Response
 ```js
 // lib/core/dispatchRequest.js
 config.data = transformData.call(
-    config, // config 成為 transformData function 中的 this
-    config.transformRequest  // config.transformRequest 成為 transformData function 第一個參數 fns
+    config, // config becomes 'this' in the transformData function
+    config.transformRequest  // config.transformRequest becomes the first parameter 'fns' in transformData function
 );
 ```
 ```js {*}{maxHeight:'200px'}
@@ -1384,8 +1384,8 @@ function transformData(fns, response) {
   const headers = AxiosHeaders.from(context.headers);
   let data = context.data;  // gets the request data
 
-  utils.forEach(fns, function transform(fn) { // 遍歷 fns 陣列中的每個 transform function
-    // 呼叫每個 function 並傳入要轉換的 data，normalized headers 以及 response status（或 undefined）
+  utils.forEach(fns, function transform(fn) { // iterate through each transform function in the fns array
+    // call each function and pass in the data to transform, normalized headers, and response status (or undefined)
     data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
   });
 
