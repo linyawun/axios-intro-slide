@@ -706,16 +706,16 @@ function AxiosURLSearchParams(params, options) {
 
 const prototype = AxiosURLSearchParams.prototype;
 
-prototype.append = function append(name, value) { // 定義 append 方法，將新的 key-value pair 新增到內部的 pairs 陣列
+prototype.append = function append(name, value) { // Define an append method that adds new key-value pairs to the internal pairs array
   this._pairs.push([name, value]);
 };
 
-prototype.toString = function toString(encoder) { // 定義 toString 方法，將所有 pairs 轉換為 URL-encoded string
-  const _encode = encoder ? function(value) { // 如果參數有指定 encoder，就回傳此 custom encoder， encoder.call(this, value, encode) 允許 custom encoder 存取要 encode 的 value 和 axios 預設的 encode function
+prototype.toString = function toString(encoder) { // Define a toString method that converts all pairs into a URL-encoded string
+  const _encode = encoder ? function(value) { // If an encoder parameter is specified, return this custom encoder. encoder.call(this, value, encode) allows the custom encoder to access both the value to be encoded and axios's default encode function
     return encoder.call(this, value, encode); 
-  } : encode; // 沒有指定 encoder，就使用預設 encode function
+  } : encode; // If no encoder is specified, use the default encode function
 
-  return this._pairs.map(function each(pair) { // 遍歷 pairs 陣列，對每個 pair 操作：Encodes the key (pair[0])、Adds an equals sign (=)、Encodes the value (pair[1])，最後用 & 連接每個 encoded pairs
+  return this._pairs.map(function each(pair) { // Iterate through the pairs array, for each pair: Encode the key (pair[0]), add an equals sign (=), encode the value (pair[1]), then join all encoded pairs with &
     return _encode(pair[0]) + '=' + _encode(pair[1]);
   }, '').join('&');
 };
@@ -998,17 +998,17 @@ Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanc
 Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
   - Both methods work similarly for these three types
     ```js
-    // 兩種方法都可行
+    // Both methods work
     const formData = new FormData();
     const blob = new Blob([]);
     const arrayBuffer = new ArrayBuffer(8);
 
-    // 方法 1: Object.prototype.toString.call()
+    // Method 1: Object.prototype.toString.call()
     toString.call(formData)    // '[object FormData]'
     toString.call(blob)        // '[object Blob]'
     toString.call(arrayBuffer) // '[object ArrayBuffer]'
 
-    // 方法 2: instanceof
+    // Method 2: instanceof
     formData instanceof FormData       // true
     blob instanceof Blob               // true
     arrayBuffer instanceof ArrayBuffer // true
