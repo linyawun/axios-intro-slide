@@ -368,7 +368,7 @@ layout: cover
 <v-clicks :every='3'>
 
 <div class="my-auto leading-6 text-base opacity-75">
-axios: ParamsInUrl
+🔺 axios: ParamsInUrl
 </div>
 
 ```js
@@ -432,7 +432,7 @@ receivedQuery: {
 <v-clicks :every='3'>
 
 <div class="my-auto leading-6 text-base opacity-75">
-fetch: WithoutEncode
+🔺 fetch: WithoutEncode
 </div>
 
 ```js
@@ -1834,7 +1834,7 @@ Error: {
 </div>
 
 <div class="my-auto leading-6 text-base opacity-75">
-fetch: 404 response
+🔺 fetch: 404 response
 </div>
 
 <div>
@@ -2131,8 +2131,75 @@ It transforms error response data just like successful responses, ensuring consi
 ---
 
 # 📝 Supplement
-### Axios Request Flow
+### Axios Request/Response Flow
 
+```js {*}{maxHeight:'320px'}
+axios.request(config) / axios.get()
+    │
+    ▼
+Axios._request()
+    │
+    ▼
+Request Interceptors
+    │   // Can modify configuration before sending request
+    │
+    ▼
+dispatchRequest()
+    │
+    ├─ 👀 Transform Request Data 
+    │   ├─ Check data type
+    │   ├─ Handle special data types
+    │   └─ JSON stringify if necessary
+    │
+    ▼
+Adapter Selection
+    │
+    ├─ Is Browser? ──────┐
+    │   │                │
+    │   │                ▼
+    │   │         XMLHttpRequest adapter
+    │   │
+    │   └─ Is Node.js? ─┐
+    │                   │
+    │                   ▼
+    │            Node.js http request
+    │
+    ▼
+Request Processing
+    ├─ resolveConfig()
+    ├─ buildURL() // 👀 Handle URL parameter encoding
+    └─ Send HTTP Request
+    │
+    ▼
+Receive Response
+    │
+    ▼
+settle() // 👀 Status code handling
+    │
+    └─ Check Response Status
+       │
+       ├─ Success (2xx) ──────────────┐
+       │                              │
+       │                              ▼
+       │                    👀 Transform Response Data
+       │                              │
+       │                              ▼
+       │                     Response Interceptors
+       │                              │
+       │                              ▼
+       │                     Resolve Promise (.then)
+       │
+       └─ Error (non-2xx) ───────────┐
+                                      │
+                                      ▼
+                           👀 Transform Error Response
+                                      │
+                                      ▼
+                           Response Interceptors
+                                      │
+                                      ▼
+                           Reject Promise (.catch)
+```
 
 ---
 
@@ -2166,6 +2233,7 @@ class: text-center
 - [https://mini-ghost.dev/posts/axios-source-code-1](https://mini-ghost.dev/posts/axios-source-code-1)
 - [https://mini-ghost.dev/posts/axios-source-code-2](https://mini-ghost.dev/posts/axios-source-code-2)
 - [https://www.cnblogs.com/JohnTsai/p/axios.html](https://www.cnblogs.com/JohnTsai/p/axios.html)
+
 
 
 
