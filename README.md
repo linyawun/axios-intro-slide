@@ -4,47 +4,33 @@
 
 - [Live Demo]()
 
-## Getting Started
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (version 18.0 or higher)
-- [pnpm](https://pnpm.io/) package manager
-
-### Installation
-
-1. Install dependencies:
+## Installation
+The following will guide you on how to install this project on your computer.
+> Please first install [Node.js](https://nodejs.org/en/download). The recommended version of Node.js is `18.12.0` or above.
+### Getting the Project
 ```bash
-pnpm install
+git clone https://github.com/linyawun/axios-intro-slide.git
+```
+### Move into the Project
+```bash
+cd axios-intro-slide
+```
+### Install Packages
+```bash
+npm install
+```
+### Run the Project
+```bash
+npm run dev
+```
+### Visit the Project
+Enter the following in your browser's address bar to view the page
+```
+http://localhost:3030
 ```
 
-2. Start the development server:
-```bash
-pnpm dev
-```
-
-3. Open your browser and visit:
-   - [http://localhost:3030](http://localhost:3030)
-
-## Development
-
-- Edit the [slides.md](./slides.md) file to modify the slide content
-- Changes will be reflected in real-time
-
-## Additional Commands
-
-```bash
-# build slides for production
-pnpm build
-
-# preview the production build
-pnpm preview
-```
-
-## Learn More
-
-- [Slidev Documentation](https://sli.dev/)
-- [Slidev GitHub Repository](https://github.com/slidevjs/slidev)
+- Edit the [slides.md](./slides.md) to see the changes.
+- Learn more about Slidev on [documentations](https://sli.dev/).
 
 ## Contact the Author
 You can contact me through the following means:

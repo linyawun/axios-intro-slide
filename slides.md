@@ -1113,6 +1113,8 @@ layout: cover
 axios: postJson
 </div>
 
+<div>
+
 ```js {*}{maxHeight:'150px'}
 async function axiosPostJson() {
   const data = {
@@ -1126,6 +1128,9 @@ async function axiosPostJson() {
   console.log('response.data:', response.data);
 }
 ```
+</div>
+
+<div>
 
 ```js {*}{maxHeight:'120px'}
 request data: {
@@ -1138,10 +1143,13 @@ response.data: {{
   receivedData: {…}
 }}
 ```
+</div>
 
 <div class="my-auto leading-6 text-base opacity-75">
 fetch: postJson
 </div>
+
+<div>
 
 ```js {*}{maxHeight:'150px'}
 async function fetchPostJson() {
@@ -1164,7 +1172,9 @@ async function fetchPostJson() {
   console.log('response.json():', result);
 }
 ```
+</div>
 
+<div>
 ```js {*}{maxHeight:'120px'}
 request data: {
   name: 'John Doe', 
@@ -1176,6 +1186,7 @@ response.data: {{
   receivedData: {…}
 }}
 ```
+</div>
 
 
 </v-clicks>
@@ -1715,6 +1726,8 @@ layout: cover
 axios: 200 response
 </div>
 
+<div>
+
 ```js {*}{maxHeight:'150px'}
 async function axiosSuccessResponse() {
   try {
@@ -1725,8 +1738,11 @@ async function axiosSuccessResponse() {
   }
 }
 ```
+</div>
 
-```js {*}{maxHeight:'120px'}
+<div>
+
+```js
 Success: {
     "status": "success",
     "data": {
@@ -1734,10 +1750,13 @@ Success: {
     }
 }
 ```
+</div>
 
 <div class="my-auto leading-6 text-base opacity-75">
 fetch: 200 response
 </div>
+
+<div>
 
 ```js {*}{maxHeight:'150px'}
 async function fetchSuccessResponse() {
@@ -1750,8 +1769,11 @@ async function fetchSuccessResponse() {
   }
 }
 ```
+</div>
 
-```js {*}{maxHeight:'120px'}
+<div>
+
+```js 
 Success: {
     "status": "success",
     "data": {
@@ -1759,6 +1781,7 @@ Success: {
     }
 }
 ```
+</div>
 
 
 </v-clicks>
@@ -1786,6 +1809,8 @@ Success: {
 axios: 404 response
 </div>
 
+<div>
+
 ```js {*}{maxHeight:'150px'}
 async function axiosNotFoundError() {
   try {
@@ -1796,17 +1821,23 @@ async function axiosNotFoundError() {
   }
 }
 ```
+</div>
 
-```js {*}{maxHeight:'120px'}
+<div>
+
+```js 
 Error: {
     "status": "error",
     "message": "Resource not found"
 }
 ```
+</div>
 
 <div class="my-auto leading-6 text-base opacity-75">
 fetch: 404 response
 </div>
+
+<div>
 
 ```js {*}{maxHeight:'150px'}
 async function fetchNotFoundError() {
@@ -1819,13 +1850,18 @@ async function fetchNotFoundError() {
   }
 }
 ```
+</div>
 
-```js {*}{maxHeight:'120px'}
+
+<div>
+
+```js 
 Success: {
     "status": "error",
     "message": "Resource not found"
 }
 ```
+</div>
 
 
 </v-clicks>
