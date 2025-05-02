@@ -2,7 +2,7 @@
 
 > This is a slide deck created with [Slidev](https://github.com/slidevjs/slidev) to introduce Axios, demonstrating its key features including URL encoding, request/response transformations, and error handling mechanisms.
 
-- [Live Demo]()
+- [Live Demo](https://linyawun.github.io/axios-intro-slide/1)
 
 ## Installation
 The following will guide you on how to install this project on your computer.
