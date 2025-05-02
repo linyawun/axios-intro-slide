@@ -2066,22 +2066,21 @@ settle()  // Determine success/failure
 # 🔍 Source Code
 ### What does [`settle`](https://github.com/axios/axios/blob/v1.x/lib/core/settle.js) do?
 
-- `settle` 函式利用 `validateStatus` 判斷狀態
-
+- The `settle` function uses `validateStatus` to determine the status
 
 ```js {*}{maxHeight:'260px'}
-// 接收三個參數：Promise 的 resolve 函式, Promise 的 reject 函式,  HTTP 回應物件
+// Takes three parameters: Promise resolve function, Promise reject function, HTTP response object
 export default function settle(resolve, reject, response) {
   const validateStatus = response.config.validateStatus;
 
-  // 三種情況會呼叫 resolve:
-  // 1. !response.status：沒有狀態碼
-  // 2. !validateStatus：沒有驗證函式
+  // Three conditions that will trigger resolve:
+  // 1. !response.status: no status code
+  // 2. !validateStatus: no validation function
   // 3. validateStatus(response.status): validation passed
   if (!response.status || !validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
-    // 驗證失敗，建立 AxiosError 並回傳錯誤
+    // Validation failed, create and return AxiosError
     reject(new AxiosError(
       'Request failed with status code ' + response.status,
       // Determine error type based on status code:
@@ -2189,7 +2188,7 @@ settle() // 👀 Status code handling
        │                              ▼
        │                     Resolve Promise (.then)
        │
-       └─ Error (non-2xx) ───────────┐
+       └─ Error (non-2xx) ────────────┐
                                       │
                                       ▼
                            👀 Transform Error Response
