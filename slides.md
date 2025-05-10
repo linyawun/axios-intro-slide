@@ -95,6 +95,7 @@ layout: cover
 ---
 
 ##### Basic Axios Usage
+
 # Usage Examples
 
 <div class='note-block'>
@@ -124,6 +125,7 @@ layout: cover
 ---
 
 ##### Basic Axios Usage
+
 # Usage Examples
 
 - Create an axios instance for requests
@@ -139,6 +141,7 @@ layout: cover
 ---
 
 ##### Basic Axios Usage
+
 # 🔍 Source Code
 
 ### axios is exported in <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#c5c3fb]!'>lib/axios.js</a>
@@ -169,6 +172,7 @@ function createInstance(defaultConfig) {
 ---
 
 ##### Basic Axios Usage
+
 # 🔍 Source Code
 
 ### axios is exported in <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#c5c3fb]!'>lib/axios.js</a>
@@ -199,6 +203,7 @@ function createInstance(defaultConfig) {
 ---
 
 ##### Basic Axios Usage
+
 # 🔍 Source Code
 
 ### axios is exported in <a href='https://github.com/axios/axios/blob/v1.x/lib/axios.js' target='_blank' class='hover:text-[#c5c3fb]!'>lib/axios.js</a>
@@ -238,6 +243,7 @@ axios.AxiosHeaders = AxiosHeaders;
 ---
 
 ##### Basic Axios Usage
+
 # 📝 Supplement
 
 <br class='hidden' />
@@ -276,6 +282,7 @@ declare const axios: AxiosStatic;
 ---
 
 ##### Basic Axios Usage
+
 # 📝 Supplement
 
 <br class='hidden' />
@@ -298,6 +305,7 @@ export interface AxiosInstance extends Axios {
   };
 }
 ```
+
 <div class='text-sm'>
 
 - `AxiosInstance` doesn't have methods like `isCancel()`, `isAxiosError()`, and can't access properties like `Cancel`, `HttpStatusCode`
@@ -309,6 +317,7 @@ export interface AxiosInstance extends Axios {
 ---
 
 ##### Basic Axios Usage
+
 # 📝 Supplement
 
 <br class='hidden' />
@@ -321,6 +330,7 @@ Compare the differences between default axios and instance returned by `axios.cr
   - In TypeScript type checking, using `AxiosInstance.create` will show an error
     <img src='/image/axiosInstance-create-TS.jpg' width='80%'/>
   - In JavaScript runtime, using `AxiosInstance.create` still works
+
     ```js
     const instance1 = axios.create({...});
     const instance2 = instance1.create({...});
@@ -329,7 +339,7 @@ Compare the differences between default axios and instance returned by `axios.cr
 
       <div class='text-sm mt-2' >
 
-      > The `createInstance` called by `axios.create` assigns a function to `instance.create`
+    > The `createInstance` called by `axios.create` assigns a function to `instance.create`
 
       </div>
 
@@ -355,6 +365,7 @@ layout: cover
 ---
 
 ##### Axios URL Encoding
+
 # Examples of axios and fetch
 
 <div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
@@ -419,6 +430,7 @@ receivedQuery: {
 ---
 
 ##### Axios URL Encoding
+
 # Examples of axios and fetch
 
 <div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
@@ -459,9 +471,9 @@ receivedQuery: {
 fetch: ManualEncode
 </div>
 
-```js 
+```js
 async function fetchManualEncode() {
-  const search = encodeURIComponent('hello world!')
+  const search = encodeURIComponent('hello world!');
   const symbol = encodeURIComponent('&$');
   const res = await fetch(
     `${API_URL}/url-encoded?search=${search}&symbol=${symbol}`
@@ -485,6 +497,7 @@ receivedQuery: {
 ---
 
 ##### Axios URL Encoding
+
 # 🔍 Source Code
 
 <br class='hidden'/>
@@ -498,10 +511,11 @@ When you call `axios.get()`, here's what happens:
 1. The request starts in the Axios class's` _request` method ([`lib/core/Axios.js`](https://github.com/axios/axios/blob/v1.x/lib/core/Axios.js)). This is the core method that handles all requests.
 2. Inside `_request`, after handling interceptors, it calls `dispatchRequest` :
 <div class='ml-6'>
+
 ```js {all|5}{maxHeight:'120px'}
 // lib/core/Axios.js
 _request(configOrUrl, config) {
-    // ... 
+    // ...
     try {
       promise = dispatchRequest.call(this, newConfig);
     } catch (error) {
@@ -510,15 +524,17 @@ _request(configOrUrl, config) {
     // ...
 }
 ```
+
 </div>
 
---- 
-
+---
 
 ##### Axios URL Encoding
+
 # 🔍 Source Code
 
 ### When does Axios call [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)?
+
 3. [`dispatchRequest`](https://github.com/axios/axios/blob/v1.x/lib/core/dispatchRequest.js) then gets the appropriate adapter (XHR for browsers, HTTP for Node.js) and calls it:
 
 <div class='ml-6'>
@@ -546,11 +562,12 @@ export default function dispatchRequest(config) {
 ---
 
 ##### Axios URL Encoding
+
 # 🔍 Source Code
 
 ### When does Axios call [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)?
-4. For browser environments, it uses the XHR adapter ([`lib/adapters/xhr.js`](https://github.com/axios/axios/blob/v1.x/lib/adapters/xhr.js)). The first thing the XHR adapter does is call `resolveConfig`
 
+4. For browser environments, it uses the XHR adapter ([`lib/adapters/xhr.js`](https://github.com/axios/axios/blob/v1.x/lib/adapters/xhr.js)). The first thing the XHR adapter does is call `resolveConfig`
 
 <div class='ml-6'>
 ```js {all|4}{maxHeight:'100px'}
@@ -581,10 +598,10 @@ export default (config) => {
 ```
 </div>
 
-
 ---
 
 ##### Axios URL Encoding
+
 # 🔍 Source Code
 
 ### When does Axios call [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js)?
@@ -611,19 +628,21 @@ buildURL()  // This is where params are encoded
 ---
 
 ##### Axios URL Encoding
+
 # 🔍 Source Code
 
 ### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
 
 - Purpose: takes a base URL and appends query parameters to it in a properly encoded format.
 - Parameters:
-    - `url`: The base URL (e.g., `"http://www.google.com"`)
-    - `params`: An object containing the query parameters to append
-    - `options`: Optional configuration for how to encode/serialize the parameters
+  - `url`: The base URL (e.g., `"http://www.google.com"`)
+  - `params`: An object containing the query parameters to append
+  - `options`: Optional configuration for how to encode/serialize the parameters
 
 ---
 
 ##### Axios URL Encoding
+
 # 🔍 Source Code
 
 ### What does [`buildURL`](https://github.com/axios/axios/blob/v1.x/lib/helpers/buildURL.js) do?
@@ -642,17 +661,18 @@ export default function buildURL(url, params, options) {
   /*eslint no-param-reassign:0*/
   // If no parameters are provided, it returns the original URL unchanged.
   // This explains why parameters in axios.get(url) won't be encoded - they need to be in the params field of the axios config to be encoded.
-  if (!params) { 
+  if (!params) {
     return url;
   }
 
-  const _encode = options && options.encode || encode; // Use options.encode if provided; otherwise use the built-in encode function
+  const _encode = (options && options.encode) || encode; // Use options.encode if provided; otherwise use the built-in encode function
 
-  if (utils.isFunction(options)) { // If options is passed as a function (e.g., custom serialize), it will be converted to { serialize: fn } format
+  if (utils.isFunction(options)) {
+    // If options is passed as a function (e.g., custom serialize), it will be converted to { serialize: fn } format
     options = {
-      serialize: options
+      serialize: options,
     };
-  } 
+  }
 
   const serializeFn = options && options.serialize;
 
@@ -661,14 +681,16 @@ export default function buildURL(url, params, options) {
   if (serializeFn) {
     serializedParams = serializeFn(params, options); // If a custom serialize function is provided, use it to process params
   } else {
-    serializedParams = utils.isURLSearchParams(params) ? // If params is a URLSearchParams instance, call .toString() directly - means developer has already transformed the params, axios doesn't need to process it
-      params.toString() :
-      new AxiosURLSearchParams(params, options).toString(_encode); // Use Axios's own AxiosURLSearchParams class to handle the params
+    serializedParams = utils.isURLSearchParams(params) // If params is a URLSearchParams instance, call .toString() directly - means developer has already transformed the params, axios doesn't need to process it
+      ? params.toString()
+      : new AxiosURLSearchParams(params, options).toString(_encode); // Use Axios's own AxiosURLSearchParams class to handle the params
   }
 
-  if (serializedParams) { // If there are serialized parameters
-    const hashmarkIndex = url.indexOf("#");
-    if (hashmarkIndex !== -1) { // If # symbol is found, remove it and everything after it
+  if (serializedParams) {
+    // If there are serialized parameters
+    const hashmarkIndex = url.indexOf('#');
+    if (hashmarkIndex !== -1) {
+      // If # symbol is found, remove it and everything after it
       url = url.slice(0, hashmarkIndex);
     }
     // Decide whether to use ? or & to connect new parameters based on whether URL already has query parameters
@@ -683,22 +705,24 @@ export default function buildURL(url, params, options) {
 ---
 
 ##### Axios URL Encoding
+
 # 🔍 Source Code
 
 ### What does [`AxiosURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/helpers/AxiosURLSearchParams.js) do?
-  - `AxiosURLSearchParams` is a custom class that handles the conversion of parameters into URL-encoded query strings
+
+- `AxiosURLSearchParams` is a custom class that handles the conversion of parameters into URL-encoded query strings
 
 <div class='ml-6'>
 
 ```js {*}{maxHeight:'250px'}
 /**
-  * It takes a params object and converts it to a FormData object
-  *
-  * @param {Object<string, any>} params - The parameters to be converted to a FormData object.
-  * @param {Object<string, any>} options - The options object passed to the Axios constructor.
-  *
-  * @returns {void}
-  */
+ * It takes a params object and converts it to a FormData object
+ *
+ * @param {Object<string, any>} params - The parameters to be converted to a FormData object.
+ * @param {Object<string, any>} options - The options object passed to the Axios constructor.
+ *
+ * @returns {void}
+ */
 function AxiosURLSearchParams(params, options) {
   this._pairs = []; // Initialize key-value pairs
   params && toFormData(params, this, options); // If params exists, call toFormData which will use append to add key-pairs to the _pairs array
@@ -706,30 +730,40 @@ function AxiosURLSearchParams(params, options) {
 
 const prototype = AxiosURLSearchParams.prototype;
 
-prototype.append = function append(name, value) { // Define an append method that adds new key-value pairs to the internal pairs array
+prototype.append = function append(name, value) {
+  // Define an append method that adds new key-value pairs to the internal pairs array
   this._pairs.push([name, value]);
 };
 
-prototype.toString = function toString(encoder) { // Define a toString method that converts all pairs into a URL-encoded string
-  const _encode = encoder ? function(value) { // If an encoder parameter is specified, return this custom encoder. encoder.call(this, value, encode) allows the custom encoder to access both the value to be encoded and axios's default encode function
-    return encoder.call(this, value, encode); 
-  } : encode; // If no encoder is specified, use the default encode function
+prototype.toString = function toString(encoder) {
+  // Define a toString method that converts all pairs into a URL-encoded string
+  const _encode = encoder
+    ? function (value) {
+        // If an encoder parameter is specified, return this custom encoder. encoder.call(this, value, encode) allows the custom encoder to access both the value to be encoded and axios's default encode function
+        return encoder.call(this, value, encode);
+      }
+    : encode; // If no encoder is specified, use the default encode function
 
-  return this._pairs.map(function each(pair) { // Iterate through the pairs array, for each pair: Encode the key (pair[0]), add an equals sign (=), encode the value (pair[1]), then join all encoded pairs with &
-    return _encode(pair[0]) + '=' + _encode(pair[1]);
-  }, '').join('&');
+  return this._pairs
+    .map(function each(pair) {
+      // Iterate through the pairs array, for each pair: Encode the key (pair[0]), add an equals sign (=), encode the value (pair[1]), then join all encoded pairs with &
+      return _encode(pair[0]) + '=' + _encode(pair[1]);
+    }, '')
+    .join('&');
 };
 ```
-</div>
 
+</div>
 
 ---
 
 ##### Axios URL Encoding
+
 # 🔍 Source Code
 
 ### What does [`AxiosURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/helpers/AxiosURLSearchParams.js) do?
-  - axios default encode function
+
+- axios default encode function
 
 <div class='ml-6'>
 
@@ -767,25 +801,31 @@ The encoding results may differ between axios's <code>encode</code> function and
 ---
 
 ##### Axios URL Encoding
+
 # 🔍 Source Code
 
 ### What does [`AxiosURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/helpers/AxiosURLSearchParams.js) do?
-  - `AxiosURLSearchParams` example
-    ```js
-    const params = {
-      name: 'John Doe',
-      age: 30,
-    };
-    const serializedParams = new AxiosURLSearchParams(params).toString(_encode);
-    // serializedParams will be "name=John+Doe&age=30"
-    ```
+
+- `AxiosURLSearchParams` example
+  ```js
+  const params = {
+    name: 'John Doe',
+    age: 30,
+  };
+  const serializedParams = new AxiosURLSearchParams(params).toString(_encode);
+  // serializedParams will be "name=John+Doe&age=30"
+  ```
 
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 ### Astra apiClient
+
 - `url.searchParams.append` also performs encoding ✅
+
 ```js
 const buildUrl = (endpoint: string, params?: Record<string, unknown>): string => {
   // ...
@@ -807,8 +847,11 @@ const buildUrl = (endpoint: string, params?: Record<string, unknown>): string =>
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+
 ```js {*}{maxHeight:'150px'}
 // lib/utils.js
 /**
@@ -821,27 +864,29 @@ const buildUrl = (endpoint: string, params?: Record<string, unknown>): string =>
 const isURLSearchParams = kindOfTest('URLSearchParams');
 ```
 
-  - `kindOfTest`: returns a function that checks for a specific type
-    ```js
-    // lib/utils.js
-    const kindOfTest = (type) => {
-      type = type.toLowerCase();
-      return (thing) => kindOf(thing) === type // Returns a function that checks if a value (thing) is an instance of the specified type (e.g., URLSearchParams)
-    }
-    ```
-
+- `kindOfTest`: returns a function that checks for a specific type
+  ```js
+  // lib/utils.js
+  const kindOfTest = (type) => {
+    type = type.toLowerCase();
+    return (thing) => kindOf(thing) === type; // Returns a function that checks if a value (thing) is an instance of the specified type (e.g., URLSearchParams)
+  };
+  ```
 
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+
 - `kindOf`: logic to check if it's an instance of a specific type
   ```js
-  const {toString} = Object.prototype;
-  const kindOf = (cache => thing => {
-      const str = toString.call(thing);
-      return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
+  const { toString } = Object.prototype;
+  const kindOf = ((cache) => (thing) => {
+    const str = toString.call(thing);
+    return cache[str] || (cache[str] = str.slice(8, -1).toLowerCase());
   })(Object.create(null));
   ```
   - When `Object.prototype.toString` is called on an object, it returns an `[object Type]` string
@@ -850,14 +895,16 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
     - `[object URLSearchParams]` becomes `URLSearchParams`
   - Creates a clean cache with `Object.create(null)`
 
-
-
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
+
 - `isURLSearchParams` execution flow
+
   ```js
   const params = new URLSearchParams();
   isURLSearchParams(params);
@@ -869,31 +916,37 @@ const isURLSearchParams = kindOfTest('URLSearchParams');
   // 4. Compare with the input type, returns true
   ```
 
+---
+
+##### Axios URL Encoding
+
+# 📝 Supplement
+
+<br class='hidden'/>
+
+Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.prototype.toString()`?
+
+- Most objects override the default `toString` method when called directly
+
+  ```js
+  const arr = [1, 2, 3];
+  arr.toString(); // return "1,2,3"
+
+  const date = new Date();
+  date.toString(); // returns something like "Mon Jan 01 2024 12:00:00 GMT+0800"
+  ```
 
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 <br class='hidden'/>
 
 Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.prototype.toString()`?
-  - Most objects override the default `toString` method when called directly
-    ```js
-    const arr = [1, 2, 3];
-    arr.toString()  // return "1,2,3"
 
-    const date = new Date();
-    date.toString()  // returns something like "Mon Jan 01 2024 12:00:00 GMT+0800"
-    ```
----
-
-##### Axios URL Encoding
-# 📝 Supplement
-<br class='hidden'/>
-
-Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.prototype.toString()`?
-  - The original implementation of `Object.prototype.toString` returns object's `[[Class]]` property
-    - `call` enforces this native behavior
+- The original implementation of `Object.prototype.toString` returns object's `[[Class]]` property - `call` enforces this native behavior
 <div class='ml-12'>
   <div class='quote mb-2'>
     To use the base Object.prototype.toString() with an object that has it overridden (or to invoke it on null or undefined), you need to call Function.prototype.call() or Function.prototype.apply() on it, passing the object you want to inspect as the first parameter (called thisArg). (ref: <a href='https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/toString' target='_blank'>Object.prototype.toString()</a>)
@@ -901,76 +954,88 @@ Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.
 
 ```js
 // Using call
-Object.prototype.toString.call([1, 2, 3])     // "[object Array]"
+Object.prototype.toString
+  .call([1, 2, 3]) // "[object Array]"
 
-// Direct toString call
-[1, 2, 3].toString()      // "1,2,3"
+  [
+    // Direct toString call
+    (1, 2, 3)
+  ].toString(); // "1,2,3"
 ```
+
 </div>
 
+---
 
+##### Axios URL Encoding
+
+# 📝 Supplement
+
+<br class='hidden'/>
+
+Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanceof`?
+
+- Cross-realm support
+
+  ```js
+  // In an iframe context
+  const iframe = document.createElement('iframe');
+  document.body.appendChild(iframe);
+  const iframeArray = iframe.contentWindow.Array;
+  const arr = new iframeArray();
+
+  // Object.prototype.toString.call()
+  toString.call(arr); // '[object Array]' → correctly identified ✅
+
+  // instanceof
+  arr instanceof Array; // false → cannot correctly identify cross-realm objects ⛔
+  ```
 
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 <br class='hidden'/>
 
 Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanceof`?
-  - Cross-realm support
-    ```js
-    // In an iframe context
-    const iframe = document.createElement('iframe');
-    document.body.appendChild(iframe);
-    const iframeArray = iframe.contentWindow.Array;
-    const arr = new iframeArray();
 
-    // Object.prototype.toString.call()
-    toString.call(arr)  // '[object Array]' → correctly identified ✅
+- Handling Primitive Types
 
-    // instanceof
-    arr instanceof Array  // false → cannot correctly identify cross-realm objects ⛔
-    ```
+  ```js
+  // Object.prototype.toString.call()
+  toString.call('string'); // '[object String]'
+  toString.call(123); // '[object Number]'
+  toString.call(true); // '[object Boolean]'
 
-
+  // instanceof
+  'string' instanceof String; // false
+  123 instanceof Number; // false
+  true instanceof Boolean; // false
+  ```
 
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 <br class='hidden'/>
 
 Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanceof`?
-  - Handling Primitive Types
-    ```js
-    // Object.prototype.toString.call()
-    toString.call('string')  // '[object String]'
-    toString.call(123)      // '[object Number]'
-    toString.call(true)     // '[object Boolean]'
 
-    // instanceof
-    'string' instanceof String  // false
-    123 instanceof Number      // false
-    true instanceof Boolean    // false
-    ```
+- Handling `null` and `undefined`
 
----
+  ```js
+  // Object.prototype.toString.call()
+  toString.call(null); // '[object Null]'
+  toString.call(undefined); // '[object Undefined]'
 
-##### Axios URL Encoding
-# 📝 Supplement
-<br class='hidden'/>
-
-Q2: Why does `kindOf` use `Object.prototype.toString.call()` instead of `instanceof`?
-  - Handling `null` and `undefined`
-    ```js
-    // Object.prototype.toString.call()
-    toString.call(null)      // '[object Null]'
-    toString.call(undefined) // '[object Undefined]'
-
-    // instanceof
-    null instanceof Object    // false
-    undefined instanceof Object // false
-    ```
+  // instanceof
+  null instanceof Object; // false
+  undefined instanceof Object; // false
+  ```
 
 <!-- ---
 
@@ -987,40 +1052,45 @@ Using  `toString.call(thing)` guarantees consistent behavior:
 
 </div> -->
 
+---
 
+##### Axios URL Encoding
+
+# 📝 Supplement
+
+<br class='hidden'/>
+
+Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
+
+- Both methods work similarly for these three types
+
+  ```js
+  // Both methods work
+  const formData = new FormData();
+  const blob = new Blob([]);
+  const arrayBuffer = new ArrayBuffer(8);
+
+  // Method 1: Object.prototype.toString.call()
+  toString.call(formData); // '[object FormData]'
+  toString.call(blob); // '[object Blob]'
+  toString.call(arrayBuffer); // '[object ArrayBuffer]'
+
+  // Method 2: instanceof
+  formData instanceof FormData; // true
+  blob instanceof Blob; // true
+  arrayBuffer instanceof ArrayBuffer; // true
+  ```
 
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 <br class='hidden'/>
 
 Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
-  - Both methods work similarly for these three types
-    ```js
-    // Both methods work
-    const formData = new FormData();
-    const blob = new Blob([]);
-    const arrayBuffer = new ArrayBuffer(8);
 
-    // Method 1: Object.prototype.toString.call()
-    toString.call(formData)    // '[object FormData]'
-    toString.call(blob)        // '[object Blob]'
-    toString.call(arrayBuffer) // '[object ArrayBuffer]'
-
-    // Method 2: instanceof
-    formData instanceof FormData       // true
-    blob instanceof Blob               // true
-    arrayBuffer instanceof ArrayBuffer // true
-    ```
-
----
-
-##### Axios URL Encoding
-# 📝 Supplement
-<br class='hidden'/>
-
-Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
 - Why differences are minimal
   - Both are instances created by constructors (not primitive types)
   - Both are built-in types
@@ -1029,11 +1099,15 @@ Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(th
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 <br class='hidden'/>
 
 Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
+
 - Main difference: cross-realm scenarios
+
   ```js
   // In an iframe context
   const iframe = document.createElement('iframe');
@@ -1041,22 +1115,24 @@ Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(th
   const iframeFormData = new iframe.contentWindow.FormData();
 
   // Object.prototype.toString.call() - works ✅
-  toString.call(iframeFormData) === '[object FormData]'  // true
+  toString.call(iframeFormData) === '[object FormData]'; // true
 
   // instanceof - may fail 🔺
-  iframeFormData instanceof FormData  // returns false in some browsers
+  iframeFormData instanceof FormData; // returns false in some browsers
   ```
+
 ---
 
 ##### Axios URL Encoding
+
 # 📝 Supplement
+
 <br class='hidden'/>
 
 Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
 
 - For framework/library development: `Object.prototype.toString.call()` is safer
 - For regular application development: `instanceof` is sufficient for these three types
-
 
 ---
 
@@ -1065,11 +1141,12 @@ layout: quote
 ```
 
 ##### Axios URL Encoding
+
 # 🧠 Summary
 
 <br class='hidden' />
 
-When we call request functions like `axios.get`, Axios uses `buildURL` to combine the base URL and params object into a complete URL. 
+When we call request functions like `axios.get`, Axios uses `buildURL` to combine the base URL and params object into a complete URL.
 
 It properly handles parameter encoding, removes anchors (`#`), processes existing query parameters (`?`), ensuring the generated URL is correctly formatted and secure.
 
@@ -1080,7 +1157,6 @@ layout: cover
 ```
 
 # Axios Request and Response Transformation
-
 
 ---
 
@@ -1093,12 +1169,12 @@ layout: cover
     - Executes when response is received, e.g., automatic `JSON.parse(response.data)`
   - Custom `transformRequest` or `transformResponse` functions can be passed through [config](https://axios-http.com/docs/req_config)
 
-
 ---
 
 ##### Axios Request and Response Transformation
+
 # Examples of axios and fetch
-  
+
 <div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
 
 <div />
@@ -1128,21 +1204,23 @@ async function axiosPostJson() {
   console.log('response.data:', response.data);
 }
 ```
+
 </div>
 
 <div>
 
 ```js {*}{maxHeight:'120px'}
 request data: {
-  name: 'John Doe', 
-  age: 30, 
+  name: 'John Doe',
+  age: 30,
   city: 'New York'
 }
 response.data: {{
-  message: 'JSON request received', 
+  message: 'JSON request received',
   receivedData: {…}
 }}
 ```
+
 </div>
 
 <div class="my-auto leading-6 text-base opacity-75">
@@ -1172,6 +1250,7 @@ async function fetchPostJson() {
   console.log('response.json():', result);
 }
 ```
+
 </div>
 
 <div>
@@ -1188,7 +1267,6 @@ response.data: {{
 ```
 </div>
 
-
 </v-clicks>
 
 </div>
@@ -1197,10 +1275,10 @@ response.data: {{
 For more, see the DEMO.
 </div>
 
-
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
 
 <br class='hidden'/>
@@ -1214,10 +1292,11 @@ When you call `axios.get()`, here's what happens:
 1. The request starts in the Axios class's` _request` method ([`lib/core/Axios.js`](https://github.com/axios/axios/blob/v1.x/lib/core/Axios.js)). This is the core method that handles all requests.
 2. Inside `_request`, after handling interceptors, it calls `dispatchRequest`:
 <div class='ml-6'>
+
 ```js {all|5}{maxHeight:'120px'}
 // lib/core/Axios.js
 _request(configOrUrl, config) {
-    // ... 
+    // ...
     try {
       promise = dispatchRequest.call(this, newConfig);
     } catch (error) {
@@ -1226,25 +1305,25 @@ _request(configOrUrl, config) {
     // ...
 }
 ```
-</div>
 
+</div>
 
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
 
 ### When does Axios call `transformRequest` and `transformResponse`?
 
 3. In `dispatchRequest`, it first transforms the request data:
 <div class='ml-6'>
+
 ```js {all|2,4}
 // lib/core/dispatchRequest.js
-config.data = transformData.call(
-  config,
-  config.transformRequest
-);
+config.data = transformData.call(config, config.transformRequest);
 ```
+
 </div>
 
 4. In `transformData`, it iterate through all transform functions:
@@ -1260,28 +1339,38 @@ export default function transformData(fns, response) {
 
   // Iterate through all transform functions
   utils.forEach(fns, function transform(fn) {
-    data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
+    data = fn.call(
+      config,
+      data,
+      headers.normalize(),
+      response ? response.status : undefined
+    );
   });
 
   headers.normalize();
   return data;
 }
 ```
+
 </div>
 
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
 
 ### When does Axios call `transformRequest` and `transformResponse`?
+
 5. After transformation, `dispatchRequest` then gets the appropriate adapter (XHR for browsers, HTTP for Node.js) and calls it:
 <div class='ml-6'>
+
 ```js
 // lib/core/dispatchRequest.js
 const adapter = adapters.getAdapter(config.adapter || defaults.adapter);
-return adapter(config)
+return adapter(config);
 ```
+
 </div>
 
 6. When server response is received, transform response data in `dispatchRequest`:
@@ -1289,49 +1378,52 @@ return adapter(config)
 
 ```js {all|5-11}{maxHeight:'150px'}
 adapter(config).then(
-// Success case
+  // Success case
   function onAdapterResolution(response) {
-  throwIfCancellationRequested(config);
-
-  // Transform response data
-  response.data = transformData.call(
-    config,
-    config.transformResponse,
-    response
-  );
-
-  response.headers = AxiosHeaders.from(response.headers);
-
-  return response;
-}, 
-// Error case, also gets transformed
-function onAdapterRejection(reason) {
-  if (!isCancel(reason)) {
     throwIfCancellationRequested(config);
 
     // Transform response data
-    if (reason && reason.response) {
-      reason.response.data = transformData.call(
-        config,
-        config.transformResponse,
-        reason.response
-      );
-      reason.response.headers = AxiosHeaders.from(reason.response.headers);
-    }
-  }
+    response.data = transformData.call(
+      config,
+      config.transformResponse,
+      response
+    );
 
-  return Promise.reject(reason);
-}
-)
+    response.headers = AxiosHeaders.from(response.headers);
+
+    return response;
+  },
+  // Error case, also gets transformed
+  function onAdapterRejection(reason) {
+    if (!isCancel(reason)) {
+      throwIfCancellationRequested(config);
+
+      // Transform response data
+      if (reason && reason.response) {
+        reason.response.data = transformData.call(
+          config,
+          config.transformResponse,
+          reason.response
+        );
+        reason.response.headers = AxiosHeaders.from(reason.response.headers);
+      }
+    }
+
+    return Promise.reject(reason);
+  }
+);
 ```
+
 </div>
 
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
 
 ### When does Axios call `transformRequest` and `transformResponse`?
+
 ```js {*}{maxHeight:'320px'}
 axios.get()
     │
@@ -1376,112 +1468,136 @@ Return Final Response
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
+
 - `transformRequest` and `transformResponse` are passed as arguments to transformData for processing.
 <div class='ml-6'>
 
 ```js
 // lib/core/dispatchRequest.js
 config.data = transformData.call(
-    config, // config becomes 'this' in the transformData function
-    config.transformRequest  // config.transformRequest becomes the first parameter 'fns' in transformData function
+  config, // config becomes 'this' in the transformData function
+  config.transformRequest // config.transformRequest becomes the first parameter 'fns' in transformData function
 );
 ```
+
 ```js {*}{maxHeight:'200px'}
 // lib/core/transformData.js
 function transformData(fns, response) {
-  const config = this || defaults;  // 'this' is the config passed via .call()
-  const context = response || config;  // since no response passed, context = config
+  const config = this || defaults; // 'this' is the config passed via .call()
+  const context = response || config; // since no response passed, context = config
   const headers = AxiosHeaders.from(context.headers);
-  let data = context.data;  // gets the request data
+  let data = context.data; // gets the request data
 
-  utils.forEach(fns, function transform(fn) { // iterate through each transform function in the fns array
+  utils.forEach(fns, function transform(fn) {
+    // iterate through each transform function in the fns array
     // call each function and pass in the data to transform, normalized headers, and response status (or undefined)
-    data = fn.call(config, data, headers.normalize(), response ? response.status : undefined);
+    data = fn.call(
+      config,
+      data,
+      headers.normalize(),
+      response ? response.status : undefined
+    );
   });
 
   headers.normalize();
   return data;
 }
 ```
-</div>
 
+</div>
 
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
+
 ### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+
 <div class='text-sm opacity-80'>
 <code>transformRequest</code> is an array containing transform functions.
 </div>
 
 ```js {*}{maxHeight:'320px'}
 // lib/defaults/index.js
-transformRequest: [function transformRequest(data, headers) {
-  const contentType = headers.getContentType() || '';
-  const hasJSONContentType = contentType.indexOf('application/json') > -1;
-  const isObjectPayload = utils.isObject(data);
+transformRequest: [
+  function transformRequest(data, headers) {
+    const contentType = headers.getContentType() || '';
+    const hasJSONContentType = contentType.indexOf('application/json') > -1;
+    const isObjectPayload = utils.isObject(data);
 
-  if (isObjectPayload && utils.isHTMLForm(data)) {
-    data = new FormData(data);
-  }
-
-  const isFormData = utils.isFormData(data);
-
-  if (isFormData) {
-    return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
-  }
-
-  if (utils.isArrayBuffer(data) ||
-    utils.isBuffer(data) ||
-    utils.isStream(data) ||
-    utils.isFile(data) ||
-    utils.isBlob(data) ||
-    utils.isReadableStream(data)
-  ) {
-    return data;
-  }
-  if (utils.isArrayBufferView(data)) {
-    return data.buffer;
-  }
-  if (utils.isURLSearchParams(data)) {
-    headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
-    return data.toString();
-  }
-
-  let isFileList;
-
-  if (isObjectPayload) {
-    if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
-      return toURLEncodedForm(data, this.formSerializer).toString();
+    if (isObjectPayload && utils.isHTMLForm(data)) {
+      data = new FormData(data);
     }
 
-    if ((isFileList = utils.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
-      const _FormData = this.env && this.env.FormData;
+    const isFormData = utils.isFormData(data);
 
-      return toFormData(
-        isFileList ? {'files[]': data} : data,
-        _FormData && new _FormData(),
-        this.formSerializer
+    if (isFormData) {
+      return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
+    }
+
+    if (
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data) ||
+      utils.isReadableStream(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      headers.setContentType(
+        'application/x-www-form-urlencoded;charset=utf-8',
+        false
       );
+      return data.toString();
     }
-  }
 
-  if (isObjectPayload || hasJSONContentType ) {
-    headers.setContentType('application/json', false);
-    return stringifySafely(data);
-  }
+    let isFileList;
 
-  return data;
-}]
+    if (isObjectPayload) {
+      if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
+        return toURLEncodedForm(data, this.formSerializer).toString();
+      }
+
+      if (
+        (isFileList = utils.isFileList(data)) ||
+        contentType.indexOf('multipart/form-data') > -1
+      ) {
+        const _FormData = this.env && this.env.FormData;
+
+        return toFormData(
+          isFileList ? { 'files[]': data } : data,
+          _FormData && new _FormData(),
+          this.formSerializer
+        );
+      }
+    }
+
+    if (isObjectPayload || hasJSONContentType) {
+      headers.setContentType('application/json', false);
+      return stringifySafely(data);
+    }
+
+    return data;
+  },
+];
 ```
 
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
+
 ### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+
 - Initial Checks
   ```js
   const contentType = headers.getContentType() || ''; // Gets the content type from headers
@@ -1489,55 +1605,66 @@ transformRequest: [function transformRequest(data, headers) {
   const isObjectPayload = utils.isObject(data); // Checks if data is an object
   ```
 - Handle Form Data
+
   ```js
   if (isObjectPayload && utils.isHTMLForm(data)) {
-      data = new FormData(data); // Converts HTML forms to FormData
-    }
+    data = new FormData(data); // Converts HTML forms to FormData
+  }
 
-    const isFormData = utils.isFormData(data); // Check if data is FormData, FormData is typically used for: File uploads, Form submissions, Multipart data
+  const isFormData = utils.isFormData(data); // Check if data is FormData, FormData is typically used for: File uploads, Form submissions, Multipart data
 
-    if (isFormData) { // If it's FormData instance
+  if (isFormData) {
+    // If it's FormData instance
     // If content-type has application/json, converts FormData to plain object and then converts object to JSON string
     // If content-type is not application/json, remain FormData as it is, this is typical for file uploads where you want to keep the multipart/form-data format
-      return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
-    }
+    return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
+  }
   ```
-
-
 
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
+
 ### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+
 - Handle Binary Data Types
   ```js
-  if (utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data) ||
-      utils.isReadableStream(data)
-  ) { 
-  // Returns binary data types unchanged
-      return data;
+  if (
+    utils.isArrayBuffer(data) ||
+    utils.isBuffer(data) ||
+    utils.isStream(data) ||
+    utils.isFile(data) ||
+    utils.isBlob(data) ||
+    utils.isReadableStream(data)
+  ) {
+    // Returns binary data types unchanged
+    return data;
   }
   ```
-
 
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
+
 ### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+
 - Handle Special Data Types
   ```js
-  if (utils.isArrayBufferView(data)) {  // Converts ArrayBufferView to buffer
-      return data.buffer;
+  if (utils.isArrayBufferView(data)) {
+    // Converts ArrayBufferView to buffer
+    return data.buffer;
   }
-  if (utils.isURLSearchParams(data)) {  // Converts URLSearchParams to string
-      headers.setContentType('application/x-www-form-urlencoded;charset=utf-8', false);
-      return data.toString();
+  if (utils.isURLSearchParams(data)) {
+    // Converts URLSearchParams to string
+    headers.setContentType(
+      'application/x-www-form-urlencoded;charset=utf-8',
+      false
+    );
+    return data.toString();
   }
   ```
   - `ArrayBufferView`: ArrayBufferView represents typed array views of binary data (ref: [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray))
@@ -1545,54 +1672,63 @@ transformRequest: [function transformRequest(data, headers) {
       - ArrayBufferView is a view into an ArrayBuffer, the actual binary data is in the `.buffer` property
       - We want to send the raw buffer, not the view
 
-
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
+
 ### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+
 - Handle Object Data
 <div class='ml-6'>
 
 ```js {*}{maxHeight:'280px'}
 if (isObjectPayload) {
-    // Convert data into URL-encoded format
-    // Can handle such as:
-    // - Simple data: { name: 'John' } → "name=John"
-    // - Nested objects: { user: { name: 'John' } } → "user[name]=John"
-    // Used for:
-    // - API endpoints expecting URL-encoded data
-    // - Traditional form submissions
-    // - Query parameters
-    // - Legacy system compatibility
-    if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
-        return toURLEncodedForm(data, this.formSerializer).toString();
-    }
+  // Convert data into URL-encoded format
+  // Can handle such as:
+  // - Simple data: { name: 'John' } → "name=John"
+  // - Nested objects: { user: { name: 'John' } } → "user[name]=John"
+  // Used for:
+  // - API endpoints expecting URL-encoded data
+  // - Traditional form submissions
+  // - Query parameters
+  // - Legacy system compatibility
+  if (contentType.indexOf('application/x-www-form-urlencoded') > -1) {
+    return toURLEncodedForm(data, this.formSerializer).toString();
+  }
 
-    // Multipart Form Data
-    // Used for:
-    // - File uploads (single or multiple files)
-    // - Mixed content (files + text data together)
-    // - Binary data handling
-    // - Large data transfers
-    // Cannot be handled by URL-encoded format
-    if ((isFileList = utils.isFileList(data)) || contentType.indexOf('multipart/form-data') > -1) {
-        const _FormData = this.env && this.env.FormData; // Creates appropriate FormData instance
-        return toFormData(
-            isFileList ? {'files[]': data} : data, // Handle files array
-            _FormData && new _FormData(),  // Create FormData
-            this.formSerializer  // Serialize complex data
-        );
-    }
+  // Multipart Form Data
+  // Used for:
+  // - File uploads (single or multiple files)
+  // - Mixed content (files + text data together)
+  // - Binary data handling
+  // - Large data transfers
+  // Cannot be handled by URL-encoded format
+  if (
+    (isFileList = utils.isFileList(data)) ||
+    contentType.indexOf('multipart/form-data') > -1
+  ) {
+    const _FormData = this.env && this.env.FormData; // Creates appropriate FormData instance
+    return toFormData(
+      isFileList ? { 'files[]': data } : data, // Handle files array
+      _FormData && new _FormData(), // Create FormData
+      this.formSerializer // Serialize complex data
+    );
+  }
 }
 ```
+
 </div>
 
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
+
 ### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+
 - Handle JSON Data 🌟
 <div class='text-sm opacity-80 ml-6'>
 In the general case, if you're sending an object and haven't specified a special content type (like form-urlencoded or multipart/form-data), Axios will use this default JSON handling
@@ -1610,53 +1746,71 @@ if (isObjectPayload || hasJSONContentType) {
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
+
 ### What does [`transformResponse`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
+
 <div class='text-sm opacity-80'>
 <code>transformResponse</code> is an array containing transform functions.
 </div>
 
 ```js {*}{maxHeight:'320px'}
-transformResponse: [function transformResponse(data) {
-  const transitional = this.transitional || defaults.transitional;
-  const forcedJSONParsing = transitional && transitional.forcedJSONParsing;
-  const JSONRequested = this.responseType === 'json';
-  
-  // Special Data Types: Return as-is for Response or ReadableStream
-  if (utils.isResponse(data) || utils.isReadableStream(data)) {
-    return data;  
-  }
-  
-  // JSON Parsing
-  if (data && utils.isString(data) && ((forcedJSONParsing && !this.responseType) || JSONRequested)) {
-    const silentJSONParsing = transitional && transitional.silentJSONParsing; // Don't throw errors on parse failures
-    const strictJSONParsing = !silentJSONParsing && JSONRequested; // Throw errors on parse failures when JSON is requested
+transformResponse: [
+  function transformResponse(data) {
+    const transitional = this.transitional || defaults.transitional;
+    const forcedJSONParsing = transitional && transitional.forcedJSONParsing;
+    const JSONRequested = this.responseType === 'json';
 
-    try {  // Converts JSON strings to JavaScript objects
-      return JSON.parse(data); 
-    } catch (e) {
-      if (strictJSONParsing) {
-        if (e.name === 'SyntaxError') {
-          throw AxiosError.from(e, AxiosError.ERR_BAD_RESPONSE, this, null, this.response);
+    // Special Data Types: Return as-is for Response or ReadableStream
+    if (utils.isResponse(data) || utils.isReadableStream(data)) {
+      return data;
+    }
+
+    // JSON Parsing
+    if (
+      data &&
+      utils.isString(data) &&
+      ((forcedJSONParsing && !this.responseType) || JSONRequested)
+    ) {
+      const silentJSONParsing = transitional && transitional.silentJSONParsing; // Don't throw errors on parse failures
+      const strictJSONParsing = !silentJSONParsing && JSONRequested; // Throw errors on parse failures when JSON is requested
+
+      try {
+        // Converts JSON strings to JavaScript objects
+        return JSON.parse(data);
+      } catch (e) {
+        if (strictJSONParsing) {
+          if (e.name === 'SyntaxError') {
+            throw AxiosError.from(
+              e,
+              AxiosError.ERR_BAD_RESPONSE,
+              this,
+              null,
+              this.response
+            );
+          }
+          throw e;
         }
-        throw e;
       }
     }
-  }
-  
-  // Default: Return data as-is if no transformation needed
-  return data;
-}]
-```
 
+    // Default: Return data as-is if no transformation needed
+    return data;
+  },
+];
+```
 
 ---
 
 ##### Axios Request and Response Transformation
+
 # 🔍 Source Code
+
 ### What does [`transformResponse`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
 
-- By default, `JSON.parse(data)` will not throw an error when parsing fails
+- By default, `JSON.parse(data)` will not throw an error when parsing fails (`silentJSONParsing` default is true)
+
   ```js
   // axios config(https://github.com/axios/axios)
   // transitional options for backward compatibility that may be removed in the newer versions
@@ -1681,13 +1835,14 @@ layout: quote
 ```
 
 ##### Axios Request and Response Transformation
+
 # 🧠 Summary
 
 <br class='hidden' />
 
-When we call request functions like `axios.post`, Axios automatically applies `transformRequest` to serialize the request data (e.g., using `JSON.stringify`) before sending it. 
+When we call request functions like `axios.post`, Axios automatically applies `transformRequest` to serialize the request data (e.g., using `JSON.stringify`) before sending it.
 
-After receiving the response, it applies `transformResponse` to deserialize the response data (e.g., using `JSON.parse`). These transformations are handled by the internal `transformData` function, which iterates through an array of transform functions passed via the config. 
+After receiving the response, it applies `transformResponse` to deserialize the response data (e.g., using `JSON.parse`). These transformations are handled by the internal `transformData` function, which iterates through an array of transform functions passed via the config.
 
 ---
 
@@ -1708,8 +1863,8 @@ layout: cover
 
 ---
 
-
 ##### Axios Error Handling
+
 # Examples of axios and fetch
 
 <div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
@@ -1731,13 +1886,14 @@ axios: 200 response
 ```js {*}{maxHeight:'150px'}
 async function axiosSuccessResponse() {
   try {
-    const response = await axios.get(`${API_URL}/success`)
-    console.log('Success:', response.data)
+    const response = await axios.get(`${API_URL}/success`);
+    console.log('Success:', response.data);
   } catch (error) {
-    console.log('Error:', error.response.data)
+    console.log('Error:', error.response.data);
   }
 }
 ```
+
 </div>
 
 <div>
@@ -1750,6 +1906,7 @@ Success: {
     }
 }
 ```
+
 </div>
 
 <div class="my-auto leading-6 text-base opacity-75">
@@ -1761,19 +1918,20 @@ fetch: 200 response
 ```js {*}{maxHeight:'150px'}
 async function fetchSuccessResponse() {
   try {
-    const response = await fetch(`${API_URL}/success`)
-    const data = await response.json()
-    console.log('Success:', data)
+    const response = await fetch(`${API_URL}/success`);
+    const data = await response.json();
+    console.log('Success:', data);
   } catch (error) {
-    console.log('Error:', error.message)
+    console.log('Error:', error.message);
   }
 }
 ```
+
 </div>
 
 <div>
 
-```js 
+```js
 Success: {
     "status": "success",
     "data": {
@@ -1781,18 +1939,17 @@ Success: {
     }
 }
 ```
-</div>
 
+</div>
 
 </v-clicks>
 
 </div>
 
-
 ---
 
-
 ##### Axios Error Handling
+
 # Examples of axios and fetch
 
 <div class="grid grid-cols-[140px_1fr_240px] gap-x-4 mt4">
@@ -1814,23 +1971,25 @@ axios: 404 response
 ```js {*}{maxHeight:'150px'}
 async function axiosNotFoundError() {
   try {
-    const response = await axios.get(`${API_URL}/not-found`)
-    console.log('Success:', response.data)
+    const response = await axios.get(`${API_URL}/not-found`);
+    console.log('Success:', response.data);
   } catch (error) {
-    console.log('Error:', error.response.data)
+    console.log('Error:', error.response.data);
   }
 }
 ```
+
 </div>
 
 <div>
 
-```js 
+```js
 Error: {
     "status": "error",
     "message": "Resource not found"
 }
 ```
+
 </div>
 
 <div class="my-auto leading-6 text-base opacity-75">
@@ -1842,116 +2001,123 @@ Error: {
 ```js {*}{maxHeight:'150px'}
 async function fetchNotFoundError() {
   try {
-    const response = await fetch(`${API_URL}/not-found`)
-    const data = await response.json()
-    console.log('Success:', data)
+    const response = await fetch(`${API_URL}/not-found`);
+    const data = await response.json();
+    console.log('Success:', data);
   } catch (error) {
-    console.log('Error:', error.message)
+    console.log('Error:', error.message);
   }
 }
 ```
-</div>
 
+</div>
 
 <div>
 
-```js 
+```js
 Success: {
     "status": "error",
     "message": "Resource not found"
 }
 ```
-</div>
 
+</div>
 
 </v-clicks>
 
 </div>
 
-
 ---
 
 ##### Axios Error Handling
+
 # 🔍 Source Code
 
 <br class='hidden'/>
 
 Axios's default error handling is in the `validateStatus` function in [`defaults/index.js`](https://github.com/axios/axios/blob/f31d2bab75286ac0d27d3da181899682af0c0fb9/lib/defaults/index.js#L145C3-L147C5)
 
-### When does Axios call `validateStatus`? 
+### When does Axios call `validateStatus`?
 
 When you call `axios.get()`, here's what happens:
 
 1. The request starts in the Axios class's `_request` method and goes through the dispatch and adapter process.
 
-
-
 ---
 
 ##### Axios Error Handling
+
 # 🔍 Source Code
 
 <br class='hidden'/>
 
-### When does Axios call `validateStatus`? 
+### When does Axios call `validateStatus`?
 
 2. Inside the adapter (e.g., xhr adapter), after receiving the response, it calls `settle`:
 
 ```js {all|24-32}{maxHeight:'280px'}
 // lib/adapters/xhr.js
-export default isXHRAdapterSupported && function (config) {
-  return new Promise(function dispatchXhrRequest(resolve, reject) {
-  // ... make request ...
+export default isXHRAdapterSupported &&
+  function (config) {
+    return new Promise(function dispatchXhrRequest(resolve, reject) {
+      // ... make request ...
 
-  function onloadend() {
-    if (!request) {
-      return;
-    }
-    // Prepare the response
-    const responseHeaders = AxiosHeaders.from(
-      'getAllResponseHeaders' in request && request.getAllResponseHeaders()
-    );
-    const responseData = !responseType || responseType === 'text' || responseType === 'json' ?
-      request.responseText : request.response;
-    const response = {
-      data: responseData,
-      status: request.status,
-      statusText: request.statusText,
-      headers: responseHeaders,
-      config,
-      request
-    };
+      function onloadend() {
+        if (!request) {
+          return;
+        }
+        // Prepare the response
+        const responseHeaders = AxiosHeaders.from(
+          'getAllResponseHeaders' in request && request.getAllResponseHeaders()
+        );
+        const responseData =
+          !responseType || responseType === 'text' || responseType === 'json'
+            ? request.responseText
+            : request.response;
+        const response = {
+          data: responseData,
+          status: request.status,
+          statusText: request.statusText,
+          headers: responseHeaders,
+          config,
+          request,
+        };
 
-    settle(function _resolve(value) {
-      resolve(value);
-      done();
-    }, function _reject(err) {
-      reject(err);
-      done();
-    }, response);
+        settle(
+          function _resolve(value) {
+            resolve(value);
+            done();
+          },
+          function _reject(err) {
+            reject(err);
+            done();
+          },
+          response
+        );
 
-    // Clean up request
-    request = null;
-  }
+        // Clean up request
+        request = null;
+      }
 
-  // ...    
+      // ...
 
-  // Use onloadend if available
-  request.onloadend = onloadend;
+      // Use onloadend if available
+      request.onloadend = onloadend;
 
-  // ...  
-  });
-}
+      // ...
+    });
+  };
 ```
 
 ---
 
 ##### Axios Error Handling
+
 # 🔍 Source Code
 
 <br class='hidden'/>
 
-### When does Axios call `validateStatus`? 
+### When does Axios call `validateStatus`?
 
 3. Inside `settle`, it uses `validateStatus` to determine success or failure:
 
@@ -1962,13 +2128,17 @@ export default function settle(resolve, reject, response) {
   if (!response.status || !validateStatus || validateStatus(response.status)) {
     resolve(response);
   } else {
-    reject(new AxiosError(
-      'Request failed with status code ' + response.status,
-      [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
-      response.config,
-      response.request,
-      response
-    ));
+    reject(
+      new AxiosError(
+        'Request failed with status code ' + response.status,
+        [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][
+          Math.floor(response.status / 100) - 4
+        ],
+        response.config,
+        response.request,
+        response
+      )
+    );
   }
 }
 ```
@@ -1976,11 +2146,12 @@ export default function settle(resolve, reject, response) {
 ---
 
 ##### Axios Error Handling
+
 # 🔍 Source Code
 
 <br class='hidden'/>
 
-### When does Axios call `validateStatus`? 
+### When does Axios call `validateStatus`?
 
 ```js {*}{maxHeight:'320px'}
 axios.get()
@@ -1995,7 +2166,7 @@ dispatchRequest()
     │   ├─ Check data type
     │   ├─ Handle special data types
     │   └─ JSON stringify if necessary
-    │       
+    │
     ▼
 xhrAdapter()
     │
@@ -2037,13 +2208,14 @@ settle()  // Determine success/failure
                               with transformed error data
 ```
 
-
-
 ---
 
 ##### Axios Error Handling
+
 # 🔍 Source Code
+
 ### What does [`validateStatus`](https://github.com/axios/axios/blob/f31d2bab75286ac0d27d3da181899682af0c0fb9/lib/defaults/index.js#L145C3-L147C5) do?
+
 - `validateStatus` function takes an HTTP status code as an argument and returns a boolean to determine whether the status code represents success
   ```js
   // defaults/index.js
@@ -2055,15 +2227,18 @@ settle()  // Determine success/failure
   - Success status can be customized
     ```js
     axios.get('/api', {
-        validateStatus: (status) => {
-            return status < 500; // treat all non-500 errors as success
-        }
-    })
+      validateStatus: (status) => {
+        return status < 500; // treat all non-500 errors as success
+      },
+    });
     ```
+
 ---
 
 ##### Axios Error Handling
+
 # 🔍 Source Code
+
 ### What does [`settle`](https://github.com/axios/axios/blob/v1.x/lib/core/settle.js) do?
 
 - The `settle` function uses `validateStatus` to determine the status
@@ -2081,43 +2256,46 @@ export default function settle(resolve, reject, response) {
     resolve(response);
   } else {
     // Validation failed, create and return AxiosError
-    reject(new AxiosError(
-      'Request failed with status code ' + response.status,
-      // Determine error type based on status code:
-      // index 0: ERR_BAD_REQUEST  - for 4xx errors
-      // index 1: ERR_BAD_RESPONSE - for 5xx errors
-      // e.g. 404 through Math.floor(404 / 100) - 4 gives 0, so use index 0 ERR_BAD_REQUEST; 
-      // 500 through Math.floor(500 / 100) - 4 gives 1, so use index 1 ERR_BAD_RESPONSE
-      [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][Math.floor(response.status / 100) - 4],
-      response.config,
-      response.request,
-      response
-    ));
+    reject(
+      new AxiosError(
+        'Request failed with status code ' + response.status,
+        // Determine error type based on status code:
+        // index 0: ERR_BAD_REQUEST  - for 4xx errors
+        // index 1: ERR_BAD_RESPONSE - for 5xx errors
+        // e.g. 404 through Math.floor(404 / 100) - 4 gives 0, so use index 0 ERR_BAD_REQUEST;
+        // 500 through Math.floor(500 / 100) - 4 gives 1, so use index 1 ERR_BAD_RESPONSE
+        [AxiosError.ERR_BAD_REQUEST, AxiosError.ERR_BAD_RESPONSE][
+          Math.floor(response.status / 100) - 4
+        ],
+        response.config,
+        response.request,
+        response
+      )
+    );
   }
 }
 ```
 
 ---
 
-
-
 ```yaml
 layout: quote
 ```
 
 ##### Axios Error Handling
+
 # 🧠 Summary
 
 <br class='hidden' />
 
-When we call request functions like `axios.get`, Axios handles errors through its `settle` function, which validates response status codes (treating non-2xx as errors by default) and creates standardized `AxiosError` objects. 
+When we call request functions like `axios.get`, Axios handles errors through its `settle` function, which validates response status codes (treating non-2xx as errors by default) and creates standardized `AxiosError` objects.
 
 It transforms error response data just like successful responses, ensuring consistent error handling and providing detailed failure information for debugging.
-
 
 ---
 
 # 📝 Supplement
+
 ### Other Axios Features
 
 - Interceptors handling
@@ -2130,6 +2308,7 @@ It transforms error response data just like successful responses, ensuring consi
 ---
 
 # 📝 Supplement
+
 ### Axios Request/Response Flow
 
 ```js {*}{maxHeight:'320px'}
@@ -2145,7 +2324,7 @@ Request Interceptors
     ▼
 dispatchRequest()
     │
-    ├─ 👀 Transform Request Data 
+    ├─ 👀 Transform Request Data
     │   ├─ Check data type
     │   ├─ Handle special data types
     │   └─ JSON stringify if necessary
@@ -2203,6 +2382,7 @@ settle() // 👀 Status code handling
 ---
 
 # 📝 Supplement
+
 ### axios/axios | DeepWiki <a href='https://deepwiki.com/axios/axios' target='_blank' class='opacity-75 text-sm'>link</a>
 
 <div class='flex gap-2 mt-2 items-start'>
@@ -2219,7 +2399,6 @@ class: text-center
 
 # Thanks for Listening!
 
-
 ---
 
 # Reference
@@ -2232,12 +2411,3 @@ class: text-center
 - [https://mini-ghost.dev/posts/axios-source-code-1](https://mini-ghost.dev/posts/axios-source-code-1)
 - [https://mini-ghost.dev/posts/axios-source-code-2](https://mini-ghost.dev/posts/axios-source-code-2)
 - [https://www.cnblogs.com/JohnTsai/p/axios.html](https://www.cnblogs.com/JohnTsai/p/axios.html)
-
-
-
-
-
-
-
-
-
