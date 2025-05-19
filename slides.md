@@ -833,11 +833,20 @@ The encoding results may differ between axios's <code>encode</code> function and
 
 - `url.searchParams.append` also performs encoding ✅
 
-```js
+```js {*|15-24}{maxHeight:'250px'}
 const buildUrl = (endpoint: string, params?: Record<string, unknown>): string => {
-  // ...
+  let url: URL
 
-  const url = new URL(path, baseUrl)
+  // check if the endpoint is absolute url
+  if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
+    // create url object
+    url = new URL(endpoint)
+  } else {
+    // relative path, need to add base url
+    const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
+    const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL
+    url = new URL(path, baseUrl)
+  }
 
   // add query params
   if (params) {
@@ -847,8 +856,10 @@ const buildUrl = (endpoint: string, params?: Record<string, unknown>): string =>
       }
     })
   }
+
   return url.toString()
 }
+
 ```
 
 ---
