@@ -76,13 +76,20 @@ glowOpacity: 0.3
 
 Axios and Fetch
 
-| Feature                   | axios | fetch                         |
-| ------------------------- | ----- | ----------------------------- |
-| Automatic JSON parsing    | ✅    | ❌ (requires `res.json()`)    |
-| Request Interceptors      | ✅    | ❌                            |
-| Response Interceptors     | ✅    | ❌                            |
-| Automatic params handling | ✅    | ❌                            |
-| Built-in error handling   | ✅    | ❌ (manual handling required) |
+<div class='text-3.75 leading-4'>
+
+| Feature                            | Axios                                   | Fetch                                                  |
+|------------------------------------|-----------------------------------------|---------------------------------------------------------|
+| Automatic JSON parsing             | ✅ Yes                                  | ❌ No (requires `res.json()`)                           |
+| Request interceptors               | ✅ Yes                                  | ❌ Not supported                                        |
+| Response interceptors              | ✅ Yes                                  | ❌ Not supported                                        |
+| Automatic params handling          | ✅ Built-in                             | ❌ Manual                                               |
+| Built-in error handling            | ✅ Yes                                  | ❌ Manual (need to check status + catch)                |
+| Bundle size impact                 | ⚠️ ~14KB+ added to bundle               | ✅ Native, zero extra size                              |
+| Server Components / SSR friendly   | ⚠️ Needs manual handling (e.g. headers) | ✅ Fully supported in Next.js SSR & Server Components   |
+| Platform support                   | ✅ Browser & Node (needs install)       | ✅ Native in browser, Node 18+ supports it natively     |
+
+</div>
 
 ---
 
