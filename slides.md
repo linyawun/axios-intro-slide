@@ -975,10 +975,8 @@ Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.
 Object.prototype.toString
   .call([1, 2, 3]) // "[object Array]"
 
-  [
-    // Direct toString call
-    (1, 2, 3)
-  ].toString(); // "1,2,3"
+// Direct toString call
+[1, 2, 3].toString(); // "1,2,3"
 ```
 
 </div>
