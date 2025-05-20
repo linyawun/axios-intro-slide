@@ -1621,21 +1621,24 @@ transformRequest: [
   const isObjectPayload = utils.isObject(data); // Checks if data is an object
   ```
 - Handle Form Data
+<div class='ml-6'>
 
-  ```js
-  if (isObjectPayload && utils.isHTMLForm(data)) {
-    data = new FormData(data); // Converts HTML forms to FormData
-  }
+```js {*}{maxHeight:'200px'}
+if (isObjectPayload && utils.isHTMLForm(data)) {
+  data = new FormData(data); // Converts HTML forms to FormData
+}
 
-  const isFormData = utils.isFormData(data); // Check if data is FormData, FormData is typically used for: File uploads, Form submissions, Multipart data
+const isFormData = utils.isFormData(data); // Check if data is FormData, FormData is typically used for: File uploads, Form submissions, Multipart data
 
-  if (isFormData) {
-    // If it's FormData instance
-    // If content-type has application/json, converts FormData to plain object and then converts object to JSON string
-    // If content-type is not application/json, remain FormData as it is, this is typical for file uploads where you want to keep the multipart/form-data format
-    return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
-  }
-  ```
+if (isFormData) {
+  // If it's FormData instance
+  // If content-type has application/json, converts FormData to plain object and then converts object to JSON string
+  // If content-type is not application/json, remain FormData as it is, this is typical for file uploads where you want to keep the multipart/form-data format
+  return hasJSONContentType ? JSON.stringify(formDataToJSON(data)) : data;
+}
+```
+
+</div>
 
 ---
 
@@ -1669,20 +1672,21 @@ transformRequest: [
 ### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
 
 - Handle Special Data Types
-  ```js
-  if (utils.isArrayBufferView(data)) {
-    // Converts ArrayBufferView to buffer
-    return data.buffer;
-  }
-  if (utils.isURLSearchParams(data)) {
-    // Converts URLSearchParams to string
-    headers.setContentType(
-      'application/x-www-form-urlencoded;charset=utf-8',
-      false
-    );
-    return data.toString();
-  }
-  ```
+```js {*}{maxHeight:'150px'}
+if (utils.isArrayBufferView(data)) {
+  // Converts ArrayBufferView to buffer
+  return data.buffer;
+}
+if (utils.isURLSearchParams(data)) {
+  // Converts URLSearchParams to string
+  headers.setContentType(
+    'application/x-www-form-urlencoded;charset=utf-8',
+    false
+  );
+  return data.toString();
+}
+```
+
   - `ArrayBufferView`: ArrayBufferView represents typed array views of binary data (ref: [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray))
     - Why extract `.buffer`?
       - ArrayBufferView is a view into an ArrayBuffer, the actual binary data is in the `.buffer` property
