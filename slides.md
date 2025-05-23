@@ -9,9 +9,9 @@ glowSeed: 4
 title: 'Exploring Axios: What Does This Library Do for Us?'
 info: |
   ## Exploring Axios: What Does This Library Do for Us?
+  - [Tech Book Community](https://github.com/Tech-Book-Community) Small Talk
   - speaker：Monica
-  - date：2025.5.20
-  - presentation at: Langlive Tech Sharing
+
 author: Monica
 class: text-center
 # https://sli.dev/features/drawing
@@ -33,7 +33,7 @@ fonts:
 
 <div class="mt-6">
 <p>speaker：Monica</p>
-<p>2025.5.20 @Langlive Tech Sharing</p>
+<p>2025.05.23 Tech Book Community Small Talk</p>
 </div>
 
 <style>
@@ -50,7 +50,36 @@ fonts:
   }
 </style>
 
+
+
 ---
+
+```yaml
+layout: intro
+glowSeed: 15
+glowOpacity: 0.3
+```
+
+# Hi, I'm Monica
+
+<div class="opacity-80">
+
+- 一年多經驗的前端工程師 <br>
+- 常用技術：React、Next.js <br>
+- 興趣：聽音樂、看漫畫、看小說、偶爾看劇 <br>
+- 想學的很多，但學得很慢...
+
+</div>
+
+<div my-10 w-min flex="~ gap-1" items-center justify-center>
+  <mdi:medium op50 ma text-xl/>
+  <div><a href="https://medium.com/@linyawun031" target="_blank" class="border-none! font-300">Monica</a></div>
+</div>
+
+
+
+---
+
 
 ```yaml
 glowSeed: 15
@@ -829,45 +858,6 @@ The encoding results may differ between axios's <code>encode</code> function and
 
 # 📝 Supplement
 
-### Astra apiClient
-
-- `url.searchParams.append` also performs encoding ✅
-
-```js {*|15-24}{maxHeight:'250px'}
-const buildUrl = (endpoint: string, params?: Record<string, unknown>): string => {
-  let url: URL
-
-  // check if the endpoint is absolute url
-  if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
-    // create url object
-    url = new URL(endpoint)
-  } else {
-    // relative path, need to add base url
-    const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`
-    const baseUrl = API_BASE_URL.endsWith('/') ? API_BASE_URL.slice(0, -1) : API_BASE_URL
-    url = new URL(path, baseUrl)
-  }
-
-  // add query params
-  if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      if (value !== undefined && value !== null) {
-        url.searchParams.append(key, String(value))
-      }
-    })
-  }
-
-  return url.toString()
-}
-
-```
-
----
-
-##### Axios URL Encoding
-
-# 📝 Supplement
-
 ### What does [`isURLSearchParams`](https://github.com/axios/axios/blob/v1.x/lib/utils.js) do?
 
 ```js {*}{maxHeight:'150px'}
@@ -1068,7 +1058,7 @@ Using  `toString.call(thing)` guarantees consistent behavior:
 
 </div> -->
 
----
+<!-- ---
 
 ##### Axios URL Encoding
 
@@ -1082,22 +1072,22 @@ Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(th
 
   ```js
   // Both methods work
-  const formData = new FormData();
-  const blob = new Blob([]);
-  const arrayBuffer = new ArrayBuffer(8);
+  // const formData = new FormData();
+  // const blob = new Blob([]);
+  // const arrayBuffer = new ArrayBuffer(8);
 
   // Method 1: Object.prototype.toString.call()
-  toString.call(formData); // '[object FormData]'
-  toString.call(blob); // '[object Blob]'
-  toString.call(arrayBuffer); // '[object ArrayBuffer]'
+  // toString.call(formData); // '[object FormData]'
+  // toString.call(blob); // '[object Blob]'
+  // toString.call(arrayBuffer); // '[object ArrayBuffer]'
 
   // Method 2: instanceof
-  formData instanceof FormData; // true
-  blob instanceof Blob; // true
-  arrayBuffer instanceof ArrayBuffer; // true
+  // formData instanceof FormData; // true
+  // blob instanceof Blob; // true
+  // arrayBuffer instanceof ArrayBuffer; // true
   ```
 
----
+
 
 ##### Axios URL Encoding
 
@@ -1112,7 +1102,6 @@ Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(th
   - Both are built-in types
   - Cross-realm scenarios are rare in normal usage
 
----
 
 ##### Axios URL Encoding
 
@@ -1126,18 +1115,17 @@ Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(th
 
   ```js
   // In an iframe context
-  const iframe = document.createElement('iframe');
-  document.body.appendChild(iframe);
-  const iframeFormData = new iframe.contentWindow.FormData();
+  // const iframe = document.createElement('iframe');
+  // document.body.appendChild(iframe);
+  // const iframeFormData = new iframe.contentWindow.FormData();
 
   // Object.prototype.toString.call() - works ✅
-  toString.call(iframeFormData) === '[object FormData]'; // true
+  // toString.call(iframeFormData) === '[object FormData]'; // true
 
   // instanceof - may fail 🔺
-  iframeFormData instanceof FormData; // returns false in some browsers
+  // iframeFormData instanceof FormData; // returns false in some browsers
   ```
 
----
 
 ##### Axios URL Encoding
 
@@ -1148,7 +1136,7 @@ Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(th
 Q3: For FormData, Blob and ArrayBuffer, any difference between `toString.call(thing)` and `instanceof`?
 
 - For framework/library development: `Object.prototype.toString.call()` is safer
-- For regular application development: `instanceof` is sufficient for these three types
+- For regular application development: `instanceof` is sufficient for these three types -->
 
 ---
 
