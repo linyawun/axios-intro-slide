@@ -50,8 +50,6 @@ fonts:
   }
 </style>
 
-
-
 ---
 
 ```yaml
@@ -76,10 +74,7 @@ glowOpacity: 0.3
   <div><a href="https://medium.com/@linyawun031" target="_blank" class="border-none! font-300">Monica</a></div>
 </div>
 
-
-
 ---
-
 
 ```yaml
 glowSeed: 15
@@ -107,16 +102,16 @@ Axios and Fetch
 
 <div class='text-3.75 leading-4'>
 
-| Feature                            | Axios                                   | Fetch                                                  |
-|------------------------------------|-----------------------------------------|---------------------------------------------------------|
-| Automatic JSON parsing             | ✅ Yes                                  | ❌ No (requires `res.json()`)                           |
-| Request interceptors               | ✅ Yes                                  | ❌ Not supported                                        |
-| Response interceptors              | ✅ Yes                                  | ❌ Not supported                                        |
-| Automatic params handling          | ✅ Built-in                             | ❌ Manual                                               |
-| Built-in error handling            | ✅ Yes                                  | ❌ Manual (need to check status + catch)                |
-| Bundle size impact                 | ⚠️ ~14KB+ added to bundle               | ✅ Native, zero extra size                              |
-| Server Components / SSR friendly   | ⚠️ Needs manual handling (e.g. headers) | ✅ Fully supported in Next.js SSR & Server Components   |
-| Platform support                   | ✅ Browser & Node (needs install)       | ✅ Native in browser, Node 18+ supports it natively     |
+| Feature                          | Axios                                   | Fetch                                                 |
+| -------------------------------- | --------------------------------------- | ----------------------------------------------------- |
+| Automatic JSON parsing           | ✅ Yes                                  | ❌ No (requires `res.json()`)                         |
+| Request interceptors             | ✅ Yes                                  | ❌ Not supported                                      |
+| Response interceptors            | ✅ Yes                                  | ❌ Not supported                                      |
+| Automatic params handling        | ✅ Built-in                             | ❌ Manual                                             |
+| Built-in error handling          | ✅ Yes                                  | ❌ Manual (need to check status + catch)              |
+| Bundle size impact               | ⚠️ ~14KB+ added to bundle               | ✅ Native, zero extra size                            |
+| Server Components / SSR friendly | ⚠️ Needs manual handling (e.g. headers) | ✅ Fully supported in Next.js SSR & Server Components |
+| Platform support                 | ✅ Browser & Node (needs install)       | ✅ Native in browser, Node 18+ supports it natively   |
 
 </div>
 
@@ -965,8 +960,10 @@ Q1: Why does `kindOf` use `Object.prototype.toString.call()` instead of `Object.
 Object.prototype.toString
   .call([1, 2, 3]) // "[object Array]"
 
-// Direct toString call
-[1, 2, 3].toString(); // "1,2,3"
+  [
+    // Direct toString call
+    (1, 2, 3)
+  ].toString(); // "1,2,3"
 ```
 
 </div>
@@ -1660,6 +1657,7 @@ if (isFormData) {
 ### What does [`transformRequest`](https://github.com/axios/axios/blob/v1.x/lib/defaults/index.js) do?
 
 - Handle Special Data Types
+
 ```js {*}{maxHeight:'150px'}
 if (utils.isArrayBufferView(data)) {
   // Converts ArrayBufferView to buffer
@@ -1675,10 +1673,10 @@ if (utils.isURLSearchParams(data)) {
 }
 ```
 
-  - `ArrayBufferView`: ArrayBufferView represents typed array views of binary data (ref: [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray))
-    - Why extract `.buffer`?
-      - ArrayBufferView is a view into an ArrayBuffer, the actual binary data is in the `.buffer` property
-      - We want to send the raw buffer, not the view
+- `ArrayBufferView`: ArrayBufferView represents typed array views of binary data (ref: [TypedArray](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypedArray))
+  - Why extract `.buffer`?
+    - ArrayBufferView is a view into an ArrayBuffer, the actual binary data is in the `.buffer` property
+    - We want to send the raw buffer, not the view
 
 ---
 
@@ -2063,7 +2061,7 @@ When you call `axios.get()`, here's what happens:
 
 2. Inside the adapter (e.g., xhr adapter), after receiving the response, it calls `settle`:
 
-```js {all|24-32}{maxHeight:'280px'}
+```js {all|28-38}{maxHeight:'280px'}
 // lib/adapters/xhr.js
 export default isXHRAdapterSupported &&
   function (config) {
@@ -2129,7 +2127,7 @@ export default isXHRAdapterSupported &&
 
 3. Inside `settle`, it uses `validateStatus` to determine success or failure:
 
-```js {all|3-5}
+```js {all|3-5}{maxHeight:'300px'}
 // lib/core/settle.js
 export default function settle(resolve, reject, response) {
   const validateStatus = response.config.validateStatus;
